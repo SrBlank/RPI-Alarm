@@ -18,3 +18,11 @@ def data():
 
 if __name__=="__main__":
     app.run()
+
+
+"""
+    <form action="/data" method = "POST">
+      <h2>New Alarm</h2>
+      <p>Enter Time <input type = "text" name = "Hours" /></p>
+      <p><input type = "submit" value = "Submit" /></p>
+"""

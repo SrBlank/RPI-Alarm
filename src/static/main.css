@@ -1,0 +1,13 @@
+body{
+    background-color: black;
+    color: white;
+}
+
+p{
+    color: white;
+}
+
+.center{
+    border: 5px solid #FFFFFF;
+    text-align: center;
+}
