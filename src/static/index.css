@@ -11,3 +11,9 @@ p{
     border: 5px solid #FFFFFF;
     text-align: center;
 }
+
+.checkbox_grid li{
+    display: block;
+    float: left;
+    width: 25%;
+}

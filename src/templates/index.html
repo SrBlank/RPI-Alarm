@@ -1,12 +1,43 @@
 <!-- templates/index.html -->
 <html>
   <head>
-    <link rel="stylesheet" href="../static/main.css">
+    <link rel="stylesheet" href="../static/index.css">
   </head>
   <body>
-    <div class="center">
-      
+
+    <div class="header_container">
+      <div class="header_content">
+        <h1>Raspberry PI Alarm</h1>
+      </div>
     </div>
+
+    <div class="checkbox_container">
+      <div class="checkbox_content">
+        
+        <form method="POST" action="/process_time">
+          <input type ="time" name="time_box">
+          <br>
+          <input type="submit" value="Submit">
+        </form>
+        
+
+        <form method="POST" action="/update_alarms">
+          <ul class="checkbox_grid">
+            {% for x in alarms_list %}
+              {% if x in alarms_selcted %}
+              <li><input type="checkbox" name="checkbox" value={{x}} checked /><label for="text1">{{x}}</label></li>
+              {% else %}
+              <li><input type="checkbox" name="checkboxN" value={{x}} /><label for="text1">{{x}}</label></li>
+              {% endif %} 
+              {% endfor %}
+          </ul>
+          <br><br><br>
+          <input type="submit" value = "Submit"/>
+        </form>
+
+      </div>
+    </div>
+
   </form>
   </body>
 </html>
