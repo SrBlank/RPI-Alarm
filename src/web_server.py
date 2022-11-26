@@ -6,9 +6,8 @@ load_dotenv(find_dotenv())
 app = Flask(__name__)
 app.secret_key = os.getenv('app_secret')
 
-list_of_alarms = ['18:45', '01:00', '11:11', '01:20']
+list_of_alarms = ['18:45', '01:00', '10:15', '01:20']
 alarms_selected = ['18:45', '01:00']
-alarms_selected_old = ['18:45', '01:00']
 
 @app.route("/")
 def hello_world():
@@ -18,6 +17,29 @@ def hello_world():
         alarms_selcted = alarms_selected
         )
 
+@app.route("/removeablealarms", methods=['POST'])
+def removeablealarms():
+    return render_template(
+        "remove_alarm.html",
+        alarms_list = list_of_alarms
+        )
+
+#
+# Function will remove alarms from list
+#
+@app.route("/remove_alarms", methods=["POST"])
+def remove_alarms():
+    form_data = request.form
+    form_checked = request.form.getlist("checkbox")
+    print(form_data)
+    for i in form_checked:
+        list_of_alarms.remove(i)   
+        
+    return redirect(url_for("hello_world"))
+
+#
+# function will check/uncheck alarm boxes
+#
 @app.route("/update_alarms", methods=['POST'])
 def update_alarms():
     form_data = request.form
@@ -32,7 +54,9 @@ def update_alarms():
     
     return redirect(url_for("hello_world"))
 
-
+#
+# Function will add a new time to the list
+#
 @app.route("/process_time", methods = ['POST'])
 def process_time():
     form_data = request.form
@@ -47,6 +71,9 @@ def process_time():
     
     return redirect(url_for("hello_world"))
 
+#
+# Function will sort the array from the earliest to latest time 
+#
 def sort_list():
     for i in range(1,len(list_of_alarms)):
         for j in range(0, len(list_of_alarms)-1):
@@ -61,8 +88,6 @@ def sort_list():
                     list_of_alarms[j] = list_of_alarms[j+1]
                     list_of_alarms[j+1] = temp
     
-    print(list_of_alarms)
-
 if __name__=="__main__":
     app.run()
 

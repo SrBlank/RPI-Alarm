@@ -1,0 +1,35 @@
+<!-- templates/index.html -->
+<html>
+  <head>
+    <link rel="stylesheet" href="../static/index.css">
+  </head>
+  <body>
+
+    <div class="header_container">
+      <div class="header_content">
+        <h1>Raspberry PI Alarm</h1>
+      </div>
+    </div>
+
+    <div class="checkbox_container">
+      <div class="checkbox_content">
+        
+
+        <form method="POST" action="/remove_alarms">
+          <ul class="checkbox_grid">
+            {% for x in alarms_list %}
+                <li><input type="checkbox" name="checkbox" value={{x}} /><label for="text1">{{x}}</label></li>
+            {% endfor %}
+          </ul>
+          <br><br><br>
+          <input type="submit" value = "Submit"/>
+        </form>
+        
+
+      </div>
+    </div>
+
+  </body>
+</html>
+
+

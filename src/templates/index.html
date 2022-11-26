@@ -25,14 +25,19 @@
           <ul class="checkbox_grid">
             {% for x in alarms_list %}
               {% if x in alarms_selcted %}
-              <li><input type="checkbox" name="checkbox" value={{x}} checked /><label for="text1">{{x}}</label></li>
+                <li><input type="checkbox" name="checkbox" value={{x}} checked /><label for="text1">{{x}}</label></li>
               {% else %}
-              <li><input type="checkbox" name="checkboxN" value={{x}} /><label for="text1">{{x}}</label></li>
+                <li><input type="checkbox" name="checkboxN" value={{x}} /><label for="text1">{{x}}</label></li>
               {% endif %} 
               {% endfor %}
           </ul>
           <br><br><br>
           <input type="submit" value = "Submit"/>
+        </form>
+        
+        <form method="POST" action="/removeablealarms">
+          <br>
+          <input type="submit" value = "Remove Alarms"/>
         </form>
 
       </div>
