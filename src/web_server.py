@@ -14,9 +14,11 @@ load_dotenv(find_dotenv())
 app = Flask(__name__)
 app.secret_key = os.getenv('app_secret')
 
-list_of_alarms = ['18:45', '01:00', '10:15', '01:20']
-alarms_selected = ['18:45', '01:00', '10:15', '01:20']
+list_of_alarms = ['18:45', '01:00', '10:15', '01:20', '00:01']
+alarms_selected = ['18:45', '01:00', '10:15', '01:20', '00:01']
 diff_array = []
+
+MINUTES_IN_DAT = 1439
 
 def sort_arr_time(array):    
 
@@ -26,7 +28,6 @@ def sort_arr_time(array):
     minutesC = d.strftime("%M")
     conver_min = int(hoursC)*60 + int(minutesC)
 
-    array.reverse()
     for i in range(0, len(array)):
         hours_current = array[i][0] + array[i][1]
         minutes_current = array[i][3] + array[i][4]
@@ -36,78 +37,12 @@ def sort_arr_time(array):
         if(difference > 0):
             index_b_time = [difference, hours_current + ":" + minutes_current]
             diff_array.append(index_b_time)
+        elif (difference < 0):
+            index_b_time = [1440-(difference*-1), hours_current + ":" + minutes_current]
+            diff_array.append(index_b_time)
 
     diff_array.sort(key=lambda x: x[0])
-    print(diff_array)
-    
-    """
-    # Attempt
-    #for i in range(0, len(diff_array)):
-    #    sorted_array.append(diff_array[i][2])
-    #
-    #print(sorted_array)
-
-    #alarm_array = []
-
-    #for i in range(0, len(diff_array)):
-    #    alarm_array.append()
-    
-    # Attempt
-    new_list = []
-    min = array[0]
-    i = 0
-    j = 1
-
-    for ind in range(0, len(array)):
-        min_index = ind
-        for j in range(ind + 1, len(array)):
-            # select the minimum element in every iteration
-            if array[j] < array[min_index]:
-                min_index = j
-         # swapping the elements to sort the array
-        (array[ind], array[min_index]) = (array[min_index], array[ind])
-        
-    print(array)
-    
-    # Attempt
-    newList = []
-    for i in range(1,len(array)):
-        hours_current = array[j][0] + array[j][1]
-        minutes_current = array[j][3] + array[j][4]
-        if int(hours_current) == int(hoursC):
-            for j in array:
-                if int(j[0:2]) == hoursC:
-                    newList.append(j)
-    
-    
-    # Attempt
-    for i in range(1,len(array)):
-        for j in range(0, len(array)):
-            hours_current = array[j][0] + array[j][1]
-            minutes_current = array[j][3] + array[j][4]
-            hours_next = array[j+1][0] + array[j+1][1]
-            minutes_next = array[j+1][3] + array[j+1][4]
-
-
-            # Attempt
-            if int(hoursC) <= int(hours_current):
-                print('outehere')
-                #if int(minutesC) >= int(minutes_next):
-                print('here')
-                temp = hours_current + ':' + minutes_current
-                array[j] = array[j+1]
-                array[j+1] = temp
-            
-            # Attempt
-            if int(hours_current) >= int(hours_next) :
-                if int(minutes_current) <= int(minutes_next):
-                    temp = hours_current + ':' + minutes_current
-                    array[j] = array[j+1]
-                    array[j+1] = temp
-            
-
-    """
-    
+    print(diff_array)   
 
 """
 def run_continuously(interval=1):
