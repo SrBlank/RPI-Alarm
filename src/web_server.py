@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv('app_secret')
 
 list_of_alarms = ['18:45', '01:00', '10:15', '01:20', '00:01', '21:39']
-alarms_selected = ['00:19', '00:20'] # ['18:45', '01:00', '10:15', '01:20', '00:01', '22:40', '22:39']
+alarms_selected = [] # ['18:45', '01:00', '10:15', '01:20', '00:01', '22:40', '22:39']
 diff_array = []
 RUNNING = True
 
@@ -28,6 +28,7 @@ HTML PAGE RENDERING
 
 @app.route("/")
 def hello_world():
+    """
     RUNNING = False
     if len(alarms_selected) != 0:
         sort_arr_time(alarms_selected)
@@ -37,6 +38,7 @@ def hello_world():
         RUNNING = True
         thread.start()
         print("STARTED THREAD")
+    """
  
     return render_template(
         "index.html",
@@ -65,7 +67,7 @@ FORM PROCESSES
 def remove_alarms():
     form_data = request.form
     form_checked = request.form.getlist("checkbox")
-    print(form_data)
+    #print(form_data)
     for i in form_checked:
         list_of_alarms.remove(i)   
         
@@ -79,8 +81,6 @@ def update_alarms():
     form_data = request.form
     form_checked = request.form.getlist("checkbox")
     form_checkedN = request.form.getlist("checkboxN")
-    print(form_checked)
-    print(form_checkedN)
     alarms_selected.clear()
 
     for j in form_checkedN:
@@ -188,12 +188,17 @@ thread = Thread(target = checkTime, daemon=True)
 
 if __name__=="__main__":
     #int_array = [5,1,3,4]
-    sort_arr_time(alarms_selected)
+    #sort_arr_time(alarms_selected)
     #schedule.every(1).second.do(start_alarm)
     #stop_run_continuously = run_continuously()
     #thread.setDaemon(True)
-    app.run()
-    thread.join()
+    alarms_selected = [1,2,3]
+    time.sleep(1)
+    alarms_selected = [1,2]
+    time.sleep(1)
+    alarms_selected = [1]
+    #app.run()
+    #thread.join()
     #stop_run_continuously.set()
 
 
