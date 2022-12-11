@@ -5,9 +5,11 @@ import os
 from datetime import datetime
 
 from threading import Thread
+import multiprocessing
 import schedule
 import time
 from subprocess import Popen, PIPE, STDOUT
+import pickle
 
 load_dotenv(find_dotenv())
 
@@ -15,31 +17,97 @@ app = Flask(__name__)
 app.secret_key = os.getenv('app_secret')
 
 list_of_alarms = ['18:45', '01:00', '10:15', '01:20', '00:01', '21:39']
-alarms_selected = [] # ['18:45', '01:00', '10:15', '01:20', '00:01', '22:40', '22:39']
+alarms_selected = [] #['18:45', '01:00', '10:15', '01:20', '00:01', '22:40', '22:39']
 diff_array = []
+
+d = datetime.now()
+min_1 = str(int(d.strftime("%M"))+1)
+hours = d.strftime("%H")
+min_2 = str(int(d.strftime("%M"))+2)
+if len(min_1) == 1:
+    now_1 = hours + ":0" + min_1 
+    now_2 = hours + ":0" + min_2 
+else:
+    now_1 = hours + ":" + min_1
+    now_2 = hours + ":" + min_2 
+add_el = [1, now_1]
+#diff_array.append(add_el)
+add_el = [1, now_2]
+#diff_array.append(add_el)
+
+list_of_alarms.append(now_1)
+list_of_alarms.append(now_2)
+alarms_selected.append(now_1)
+alarms_selected.append(now_2)
+
+
 RUNNING = True
 
 
 MINUTES_IN_DAY = 1440
 
+
+current_timer = "!"
+
+
+def countdown(time):
+    #print(len(diff_array))
+    print(diff_array)
+    for i in range(0,len(diff_array)):
+        print("=================================")
+        print("function start")
+        alarm_time = diff_array[0][1]
+        print(alarm_time)
+
+        d = datetime.now()
+        curr_time = d.strftime("%H:%M")
+        
+        while alarm_time != curr_time:
+            d = datetime.now()
+            curr_time = d.strftime("%H:%M")
+
+        print(diff_array)
+        diff_array.pop(0)
+        print(diff_array)
+        print("ALARM DONE")
+        print("=================================")
+
+
+    #diff_array.clear()
+    #print(diff_array)
+    #print(alarms_selected)
+    
+
+class Alarm:
+    def __init__(self, alarm):
+        self.alarm = alarm
+        self.process = multiprocessing.Process(target=countdown, args=(self.alarm,))
+        self.process.start()
+        print("process start")
+
+    def __del__(self):
+        del self.alarm
+        self.process.terminate()
+
+    def getAlarmTime(self):
+        return self.alarm
+
 """
 HTML PAGE RENDERING
 """
+#process = multiprocessing.Process(target=countdown)
+#alarm_time = diff_array[0][1]
+#process = multiprocessing.Process(target=countdown, args=(alarm_time,))
 
 @app.route("/")
 def hello_world():
-    """
-    RUNNING = False
-    if len(alarms_selected) != 0:
-        sort_arr_time(alarms_selected)
-        if thread.is_alive():
-            thread.join()
-            print("STOPPED THREAD")
-        RUNNING = True
-        thread.start()
-        print("STARTED THREAD")
-    """
- 
+    d = datetime.now()
+    rn = d.strftime("%H:%M:%S")
+
+    with open('listfile.data', 'wb') as alarms:
+        pickle.dump([diff_array, rn], alarms)
+      
+
     return render_template(
         "index.html",
         alarms_list = list_of_alarms,
@@ -89,8 +157,14 @@ def update_alarms():
         alarms_selected.append(k)
 
     sort_list(alarms_selected)
+    diff_array.clear()
+    sort_arr_time(alarms_selected)
     
     return redirect(url_for("hello_world"))
+
+def removeOldAlarms():
+    
+    pass
 
 #
 # Function will add a new time to the list
@@ -189,17 +263,35 @@ thread = Thread(target = checkTime, daemon=True)
 if __name__=="__main__":
     #int_array = [5,1,3,4]
     #sort_arr_time(alarms_selected)
+    #print(diff_array)
+    #countdown()
     #schedule.every(1).second.do(start_alarm)
     #stop_run_continuously = run_continuously()
     #thread.setDaemon(True)
-    alarms_selected = [1,2,3]
-    time.sleep(1)
-    alarms_selected = [1,2]
-    time.sleep(1)
-    alarms_selected = [1]
-    #app.run()
-    #thread.join()
+    app.run()
+    #thread.join() 
     #stop_run_continuously.set()
+    """
+    d = datetime.now()
+    min_1 = str(int(d.strftime("%M"))+1)
+    hours = d.strftime("%H")
+    min_2 = str(int(d.strftime("%M"))+2)
+    if len(min_1) == 1:
+        now_1 = hours + ":0" + min_1 
+        now_2 = hours + ":0" + min_2 
+    else:
+        now_1 = hours + ":" + min_1
+        now_2 = hours + ":" + min_2 
+    add_el = [1, now_1]
+    diff_array.append(add_el)
+    add_el = [1, now_2]
+    diff_array.append(add_el)
+    print(diff_array)
+
+    process = multiprocessing.Process(target=countdown)
+    process.start()
+    """
+
 
 
 """
