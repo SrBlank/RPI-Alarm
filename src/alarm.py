@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 from subprocess import Popen, PIPE, STDOUT
 import logging
+from support_functions import sort_arr_time_2d
 
 temp_array = []
 rn = 0
@@ -34,6 +35,7 @@ with open('listfile.data', 'rb') as alarms:
 for i in diff_array:
     temp_array.append(i)
 
+"""
 def sort_arr_time(D2_array_to_sort=[]):
     sorted_array = []
     if len(D2_array_to_sort) != 0:
@@ -63,8 +65,10 @@ def sort_arr_time(D2_array_to_sort=[]):
         return sorted_array 
     else:
         pass
+"""
 
 while True: 
+    print(diff_array)
     loop_counter = loop_counter + 1
         
     logger.debug(f'Loop Start: {loop_counter}')
@@ -72,7 +76,7 @@ while True:
         diff_array, rn = pickle.load(alarms)
         logger.debug("Diff Array Has Been Read")
 
-    diff_array = sort_arr_time(diff_array)
+    diff_array = sort_arr_time_2d(diff_array)
     logger.debug("Array Resorted")
 
     if rn != rn_old:

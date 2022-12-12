@@ -11,6 +11,7 @@ import time
 from subprocess import Popen, PIPE, STDOUT
 import sys
 import pickle
+from support_functions import sort_arr_time
 
 load_dotenv(find_dotenv())
 
@@ -43,17 +44,47 @@ alarms_selected.append(now_2)
 
 MINUTES_IN_DAY = 1440
 
+"""
+def sort_arr_time(D1_array_to_sort):
+    sorted_array = []
+    if len(D1_array_to_sort) != 0:
+        temp_array = []
+        for i in range(0, len(D1_array_to_sort)):
+            temp_array.append(D1_array_to_sort[i])
+
+        d = datetime.now()
+        formatted_d = d.strftime("%H:%M")
+        hoursC = d.strftime("%H")
+        minutesC = d.strftime("%M")
+        conver_min = int(hoursC)*60 + int(minutesC)
+
+        for i in range(0, len(temp_array)):
+            hours_current = temp_array[i][0] + temp_array[i][1]
+            minutes_current = temp_array[i][3] + temp_array[i][4]
+            conver_current = int(hours_current)*60 + int(minutes_current)
+
+            difference = conver_current - conver_min
+            if (difference > 0):
+                index_b_time = [difference, hours_current + ":" + minutes_current]
+                sorted_array.append(index_b_time)
+            elif (difference <= 0):
+                index_b_time = [MINUTES_IN_DAY-(difference*-1), hours_current + ":" + minutes_current]
+                sorted_array.append(index_b_time)
+        sorted_array.sort(key=lambda x: x[0])
+        return sorted_array 
+    else:
+        pass
+"""
 
 """
 HTML PAGE RENDERING
 """
-
-
 @app.route("/")
 def hello_world():
     d = datetime.now()
     rn = d.strftime("%H:%M:%S")
 
+    diff_array = sort_arr_time(alarms_selected)
     with open('listfile.data', 'wb') as alarms:
         pickle.dump([diff_array, rn], alarms)      
 
@@ -106,14 +137,12 @@ def update_alarms():
         alarms_selected.append(k)
 
     sort_list(alarms_selected)
-    diff_array.clear()
-    sort_arr_time(alarms_selected)
+    #diff_array.clear()
+    #diff_array = sort_arr_time(alarms_selected)
+    #print(diff_array)
     
     return redirect(url_for("hello_world"))
 
-def removeOldAlarms():
-    
-    pass
 
 #
 # Function will add a new time to the list
@@ -139,35 +168,7 @@ SUPPORTING FUNCTIONS
 #
 # Function will sort the array from the earliest to latest time 
 #
-def sort_arr_time(array = alarms_selected):
 
-    sortted_array = []    
-
-    d = datetime.now()
-    formatted_d = d.strftime("%H:%M")
-    hoursC = d.strftime("%H")
-    minutesC = d.strftime("%M")
-    conver_min = int(hoursC)*60 + int(minutesC)
-
-    for i in range(0, len(array)):
-        hours_current = array[i][0] + array[i][1]
-        minutes_current = array[i][3] + array[i][4]
-        conver_current = int(hours_current)*60 + int(minutes_current)
-
-        difference = conver_current - conver_min
-        if(difference > 0):
-            index_b_time = [difference, hours_current + ":" + minutes_current]
-            diff_array.append(index_b_time)
-            #sortted_array.append(index_b_time)
-        elif (difference <= 0):
-            index_b_time = [MINUTES_IN_DAY-(difference*-1), hours_current + ":" + minutes_current]
-            diff_array.append(index_b_time)
-            #sortted_array.append(index_b_time)
-
-    diff_array.sort(key=lambda x: x[0])
-    #sortted_array.sort(key=lambda x: x[0])
-    #return sortted_array
-    #print(diff_array) 
 
 def sort_list(sort_array ):
     for i in range(1,len(sort_array)):
