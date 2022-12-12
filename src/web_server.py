@@ -166,7 +166,7 @@ def sort_arr_time(array = alarms_selected):
 
     diff_array.sort(key=lambda x: x[0])
     #sortted_array.sort(key=lambda x: x[0])
-    return sortted_array
+    #return sortted_array
     #print(diff_array) 
 
 def sort_list(sort_array ):
@@ -182,8 +182,6 @@ def sort_list(sort_array ):
                     temp = hours_current + ':' + minutes_current
                     sort_array[j] = sort_array[j+1]
                     sort_array[j+1] = temp
-
-
 
 if __name__=="__main__":
     if os.path.exists("listfile.data"):
