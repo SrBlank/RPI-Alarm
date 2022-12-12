@@ -1,9 +1,11 @@
-import pickle
-import time
-from datetime import datetime
 import os
-from subprocess import Popen, PIPE, STDOUT
+import time
+import pickle
 import logging
+
+from datetime import datetime
+from subprocess import Popen, PIPE, STDOUT
+
 from support_functions import sort_arr_time_2d
 
 temp_array = []
@@ -28,6 +30,7 @@ if os.path.exists("std.log"):
 # creates logger object
 logging.basicConfig(filename='std.log', filemode='a', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
+logger.warning("Starting Log File")
 
 # first time diff_array load - may not need
 with open('listfile.data', 'rb') as alarms:
@@ -44,10 +47,13 @@ while True:
         diff_array, rn = pickle.load(alarms)
         logger.debug("Diff Array Has Been Read")
 
-    diff_array = sort_arr_time_2d(diff_array)
-    logger.debug("Array Resorted")
+    if diff_array != None:
+        diff_array = sort_arr_time_2d(diff_array)
+        logger.debug("Array Resorted")
+    else:
+        logger.debug("Array was NOT Resorted")
 
-    if rn != rn_old:
+    if rn != rn_old and diff_array != None:
         logger.info("Array Updated")
         rn_old = rn
         temp_array.clear()
