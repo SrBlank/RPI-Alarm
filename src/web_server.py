@@ -11,7 +11,7 @@ import time
 from subprocess import Popen, PIPE, STDOUT
 import sys
 import pickle
-from support_functions import sort_arr_time
+from support_functions import sort_arr_time, sort_list
 
 load_dotenv(find_dotenv())
 
@@ -43,38 +43,6 @@ alarms_selected.append(now_1)
 alarms_selected.append(now_2)
 
 MINUTES_IN_DAY = 1440
-
-"""
-def sort_arr_time(D1_array_to_sort):
-    sorted_array = []
-    if len(D1_array_to_sort) != 0:
-        temp_array = []
-        for i in range(0, len(D1_array_to_sort)):
-            temp_array.append(D1_array_to_sort[i])
-
-        d = datetime.now()
-        formatted_d = d.strftime("%H:%M")
-        hoursC = d.strftime("%H")
-        minutesC = d.strftime("%M")
-        conver_min = int(hoursC)*60 + int(minutesC)
-
-        for i in range(0, len(temp_array)):
-            hours_current = temp_array[i][0] + temp_array[i][1]
-            minutes_current = temp_array[i][3] + temp_array[i][4]
-            conver_current = int(hours_current)*60 + int(minutes_current)
-
-            difference = conver_current - conver_min
-            if (difference > 0):
-                index_b_time = [difference, hours_current + ":" + minutes_current]
-                sorted_array.append(index_b_time)
-            elif (difference <= 0):
-                index_b_time = [MINUTES_IN_DAY-(difference*-1), hours_current + ":" + minutes_current]
-                sorted_array.append(index_b_time)
-        sorted_array.sort(key=lambda x: x[0])
-        return sorted_array 
-    else:
-        pass
-"""
 
 """
 HTML PAGE RENDERING
@@ -137,12 +105,8 @@ def update_alarms():
         alarms_selected.append(k)
 
     sort_list(alarms_selected)
-    #diff_array.clear()
-    #diff_array = sort_arr_time(alarms_selected)
-    #print(diff_array)
-    
+   
     return redirect(url_for("hello_world"))
-
 
 #
 # Function will add a new time to the list
@@ -160,29 +124,6 @@ def process_time():
     sort_list(list_of_alarms)
     
     return redirect(url_for("hello_world"))
-
-"""
-SUPPORTING FUNCTIONS
-"""
-
-#
-# Function will sort the array from the earliest to latest time 
-#
-
-
-def sort_list(sort_array ):
-    for i in range(1,len(sort_array)):
-        for j in range(0, len(sort_array)-1):
-            hours_current = sort_array[j][0] + sort_array[j][1]
-            minutes_current = sort_array[j][3] + sort_array[j][4]
-            hours_next = sort_array[j+1][0] + sort_array[j+1][1]
-            minutes_next = sort_array[j][3] + sort_array[j][4]
-
-            if int(hours_current) >= int(hours_next) :
-                if int(minutes_current) <= int(minutes_next):
-                    temp = hours_current + ':' + minutes_current
-                    sort_array[j] = sort_array[j+1]
-                    sort_array[j+1] = temp
 
 if __name__=="__main__":
     if os.path.exists("listfile.data"):

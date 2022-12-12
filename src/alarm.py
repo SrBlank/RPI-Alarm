@@ -35,38 +35,6 @@ with open('listfile.data', 'rb') as alarms:
 for i in diff_array:
     temp_array.append(i)
 
-"""
-def sort_arr_time(D2_array_to_sort=[]):
-    sorted_array = []
-    if len(D2_array_to_sort) != 0:
-        temp_array = []
-        for i in range(0, len(D2_array_to_sort)):
-            temp_array.append(D2_array_to_sort[i][1])
-
-        d = datetime.now()
-        formatted_d = d.strftime("%H:%M")
-        hoursC = d.strftime("%H")
-        minutesC = d.strftime("%M")
-        conver_min = int(hoursC)*60 + int(minutesC)
-
-        for i in range(0, len(temp_array)):
-            hours_current = temp_array[i][0] + temp_array[i][1]
-            minutes_current = temp_array[i][3] + temp_array[i][4]
-            conver_current = int(hours_current)*60 + int(minutes_current)
-
-            difference = conver_current - conver_min
-            if (difference > 0):
-                index_b_time = [difference, hours_current + ":" + minutes_current]
-                sorted_array.append(index_b_time)
-            elif (difference <= 0):
-                index_b_time = [MINUTES_IN_DAY-(difference*-1), hours_current + ":" + minutes_current]
-                sorted_array.append(index_b_time)
-        sorted_array.sort(key=lambda x: x[0])
-        return sorted_array 
-    else:
-        pass
-"""
-
 while True: 
     print(diff_array)
     loop_counter = loop_counter + 1
