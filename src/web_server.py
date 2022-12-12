@@ -9,6 +9,7 @@ import multiprocessing
 import schedule
 import time
 from subprocess import Popen, PIPE, STDOUT
+import sys
 import pickle
 
 load_dotenv(find_dotenv())
@@ -40,64 +41,13 @@ list_of_alarms.append(now_2)
 alarms_selected.append(now_1)
 alarms_selected.append(now_2)
 
-
-RUNNING = True
-
-
 MINUTES_IN_DAY = 1440
 
-
-current_timer = "!"
-
-
-def countdown(time):
-    #print(len(diff_array))
-    print(diff_array)
-    for i in range(0,len(diff_array)):
-        print("=================================")
-        print("function start")
-        alarm_time = diff_array[0][1]
-        print(alarm_time)
-
-        d = datetime.now()
-        curr_time = d.strftime("%H:%M")
-        
-        while alarm_time != curr_time:
-            d = datetime.now()
-            curr_time = d.strftime("%H:%M")
-
-        print(diff_array)
-        diff_array.pop(0)
-        print(diff_array)
-        print("ALARM DONE")
-        print("=================================")
-
-
-    #diff_array.clear()
-    #print(diff_array)
-    #print(alarms_selected)
-    
-
-class Alarm:
-    def __init__(self, alarm):
-        self.alarm = alarm
-        self.process = multiprocessing.Process(target=countdown, args=(self.alarm,))
-        self.process.start()
-        print("process start")
-
-    def __del__(self):
-        del self.alarm
-        self.process.terminate()
-
-    def getAlarmTime(self):
-        return self.alarm
 
 """
 HTML PAGE RENDERING
 """
-#process = multiprocessing.Process(target=countdown)
-#alarm_time = diff_array[0][1]
-#process = multiprocessing.Process(target=countdown, args=(alarm_time,))
+
 
 @app.route("/")
 def hello_world():
@@ -105,8 +55,7 @@ def hello_world():
     rn = d.strftime("%H:%M:%S")
 
     with open('listfile.data', 'wb') as alarms:
-        pickle.dump([diff_array, rn], alarms)
-      
+        pickle.dump([diff_array, rn], alarms)      
 
     return render_template(
         "index.html",
@@ -190,7 +139,9 @@ SUPPORTING FUNCTIONS
 #
 # Function will sort the array from the earliest to latest time 
 #
-def sort_arr_time(array):    
+def sort_arr_time(array = alarms_selected):
+
+    sortted_array = []    
 
     d = datetime.now()
     formatted_d = d.strftime("%H:%M")
@@ -207,14 +158,18 @@ def sort_arr_time(array):
         if(difference > 0):
             index_b_time = [difference, hours_current + ":" + minutes_current]
             diff_array.append(index_b_time)
+            #sortted_array.append(index_b_time)
         elif (difference <= 0):
             index_b_time = [MINUTES_IN_DAY-(difference*-1), hours_current + ":" + minutes_current]
             diff_array.append(index_b_time)
+            #sortted_array.append(index_b_time)
 
     diff_array.sort(key=lambda x: x[0])
+    #sortted_array.sort(key=lambda x: x[0])
+    return sortted_array
     #print(diff_array) 
 
-def sort_list(sort_array):
+def sort_list(sort_array ):
     for i in range(1,len(sort_array)):
         for j in range(0, len(sort_array)-1):
             hours_current = sort_array[j][0] + sort_array[j][1]
@@ -227,89 +182,15 @@ def sort_list(sort_array):
                     temp = hours_current + ':' + minutes_current
                     sort_array[j] = sort_array[j+1]
                     sort_array[j+1] = temp
-def checkTime():
-    while RUNNING:
-        print("function call")
-        if len(diff_array) != 0:
-            run_alarm()
-            diff_array.pop(0)
-            print(diff_array)
-        time.sleep(.1)
-    """
-    print("STARTING")
-    time.sleep(1)
-    if len(diff_array) != 0:
-        for i in range(0, len(diff_array)):
-            run_alarm()
-            #alarms_selected.remove(diff_array[0][1])
-            diff_array.pop(0)
-    """
 
-def run_alarm():
-    current_alarm = diff_array[0][1]
-    now = (datetime.now()).strftime("%H:%M")
-    #print(now)
-    while now != current_alarm and RUNNING:
-        now = (datetime.now()).strftime("%H:%M")
-        time.sleep(1)
 
-    if RUNNING:
-        print("ALARM " + str(current_alarm))
- 
-
-thread = Thread(target = checkTime, daemon=True)
-#thread.start()
 
 if __name__=="__main__":
-    #int_array = [5,1,3,4]
-    #sort_arr_time(alarms_selected)
-    #print(diff_array)
-    #countdown()
-    #schedule.every(1).second.do(start_alarm)
-    #stop_run_continuously = run_continuously()
-    #thread.setDaemon(True)
-    app.run()
-    #thread.join() 
-    #stop_run_continuously.set()
-    """
-    d = datetime.now()
-    min_1 = str(int(d.strftime("%M"))+1)
-    hours = d.strftime("%H")
-    min_2 = str(int(d.strftime("%M"))+2)
-    if len(min_1) == 1:
-        now_1 = hours + ":0" + min_1 
-        now_2 = hours + ":0" + min_2 
+    if os.path.exists("listfile.data"):
+        os.remove("listfile.data")
+        print("removed listfile.data")
     else:
-        now_1 = hours + ":" + min_1
-        now_2 = hours + ":" + min_2 
-    add_el = [1, now_1]
-    diff_array.append(add_el)
-    add_el = [1, now_2]
-    diff_array.append(add_el)
-    print(diff_array)
+        print("listfile.data will be created")
 
-    process = multiprocessing.Process(target=countdown)
-    process.start()
-    """
-
-
-
-"""
-def run_continuously(interval=1):
-    cease_continuous_run = threading.Event()
-
-    class ScheduleThread(threading.Thread):
-        @classmethod
-        def run(cls):
-            while not cease_continuous_run.is_set():
-                schedule.run_pending()
-                time.sleep(interval)
-
-    continuous_thread = ScheduleThread()
-    continuous_thread.start()
-    return cease_continuous_run
-
-def start_alarm():
-    p = Popen(['python3', '-u', './alarm.py'], stdout = PIPE, stderr=STDOUT, bufsize=1)
-    return schedule.CancelJob
-"""
+    p = Popen([sys.executable, '-u', './alarm.py'], stdout = PIPE, stderr=STDOUT, bufsize=1)
+    app.run()
