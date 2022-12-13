@@ -28,9 +28,9 @@ else:
 if os.path.exists("std.log"):
     os.remove("std.log")
 # creates logger object
-logging.basicConfig(filename='std.log', filemode='a', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='std.log', filemode='a', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
-logger.warning("Starting Log File")
+logger.info("Starting Log File")
 
 # first time diff_array load - may not need
 with open('listfile.data', 'rb') as alarms:
@@ -39,44 +39,43 @@ for i in diff_array:
     temp_array.append(i)
 
 while True: 
-    print(diff_array)
     loop_counter = loop_counter + 1
         
     logger.debug(f'Loop Start: {loop_counter}')
     with open('listfile.data', 'rb') as alarms:
         diff_array, rn = pickle.load(alarms)
         logger.debug("Diff Array Has Been Read")
-
+    
     if diff_array != None:
         diff_array = sort_arr_time_2d(diff_array)
         logger.debug("Array Resorted")
-    else:
-        logger.debug("Array was NOT Resorted")
-
-    if rn != rn_old and diff_array != None:
-        logger.info("Array Updated")
-        rn_old = rn
-        temp_array.clear()
-        for i in range(0, len(diff_array)):
-            temp_array.append(diff_array[i])
-        counter = 0
-    elif rn == rn_old:
-        logger.info("Array Not Updated")
-        pass
-
-    if counter < len(temp_array):
-        alarm_time = temp_array[counter][1]
-        d = datetime.now()
-        curr_time = d.strftime("%H:%M")
-        logger.info("Time Being Checked: " + alarm_time)
-        if alarm_time == curr_time:
-            counter = counter + 1
-            logger.critical("**ALARM DONE**")
-            proc = Popen(['gedit', 'file.txt'])
-            proc.wait()
-        else:
+ 
+        if rn != rn_old:
+            logger.debug("Array Updated")
+            rn_old = rn
+            temp_array.clear()
+            for i in range(0, len(diff_array)):
+                temp_array.append(diff_array[i])
+            counter = 0
+        elif rn == rn_old:
+            logger.debug("Array Not Updated")
             pass
-            logger.debug("It Is Not Time")
+
+        if counter < len(temp_array):
+            alarm_time = temp_array[counter][1]
+            d = datetime.now()
+            curr_time = d.strftime("%H:%M")
+            logger.info("Time Being Checked: " + alarm_time)
+            if alarm_time == curr_time:
+                counter = counter + 1
+                logger.critical("**ALARM DONE**")
+                proc = Popen(['gedit', 'file.txt'])
+                proc.wait()
+            else:
+                pass
+                logger.debug("It Is Not Time")
+    else:
+        logger.warning("diff_array is None")
         
     logger.debug(f"Loop End: {loop_counter}")
     time.sleep(3)

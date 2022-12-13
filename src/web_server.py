@@ -17,6 +17,7 @@ list_of_alarms = ['18:45', '01:00', '10:15', '01:20', '00:01', '21:39']
 alarms_selected = [] #['18:45', '01:00', '10:15', '01:20', '00:01', '22:40', '22:39']
 diff_array = []
 
+#### THIS CODE WILL ADD 2 ALARMS #### 
 # d = datetime.now()
 # min_1 = str(int(d.strftime("%M"))+1)
 # hours = d.strftime("%H")
