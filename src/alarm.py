@@ -28,7 +28,7 @@ else:
 if os.path.exists("std.log"):
     os.remove("std.log")
 # creates logger object
-logging.basicConfig(filename='std.log', filemode='a', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='std.log', filemode='a', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
 logger.info("Starting Log File")
 
@@ -49,7 +49,8 @@ while True:
     if diff_array != None:
         diff_array = sort_arr_time_2d(diff_array)
         logger.debug("Array Resorted")
- 
+
+    if diff_array != None:
         if rn != rn_old:
             logger.debug("Array Updated")
             rn_old = rn
@@ -70,7 +71,7 @@ while True:
                 counter = counter + 1
                 logger.critical("**ALARM DONE**")
                 proc = Popen(['gedit', 'file.txt'])
-                proc.wait()
+                #proc.wait()
             else:
                 pass
                 logger.debug("It Is Not Time")

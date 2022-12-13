@@ -15,7 +15,7 @@ app.secret_key = os.getenv('app_secret')
 
 MINUTES_IN_DAY = 1440
 
-list_of_alarms = ['18:45', '01:00', '10:15', '01:20', '00:01', '21:39']
+list_of_alarms = [] #['18:45', '01:00', '10:15', '01:20', '00:01', '21:39']
 alarms_sel = [] # ['18:45', '01:00', '10:15', '01:20', '00:01', '22:40', '22:39']
 alarms_sel_sorted_2d = []
 
