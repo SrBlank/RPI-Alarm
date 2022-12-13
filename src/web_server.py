@@ -13,9 +13,11 @@ load_dotenv(find_dotenv())
 app = Flask(__name__)
 app.secret_key = os.getenv('app_secret')
 
+MINUTES_IN_DAY = 1440
+
 list_of_alarms = ['18:45', '01:00', '10:15', '01:20', '00:01', '21:39']
-alarms_selected = [] #['18:45', '01:00', '10:15', '01:20', '00:01', '22:40', '22:39']
-diff_array = []
+alarms_sel = [] # ['18:45', '01:00', '10:15', '01:20', '00:01', '22:40', '22:39']
+alarms_sel_sorted_2d = []
 
 #### THIS CODE WILL ADD 2 ALARMS #### 
 # d = datetime.now()
@@ -29,15 +31,14 @@ diff_array = []
 #     now_1 = hours + ":" + min_1
 #     now_2 = hours + ":" + min_2 
 # add_el = [1, now_1]
-# #diff_array.append(add_el)
+# #alarms_sel_sorted_2d.append(add_el)
 # add_el = [1, now_2]
-# #diff_array.append(add_el)
+# #alarms_sel_sorted_2d.append(add_el)
 # list_of_alarms.append(now_1)
 # list_of_alarms.append(now_2)
-# alarms_selected.append(now_1)
-# alarms_selected.append(now_2)
+# alarms_sel.append(now_1)
+# alarms_sel.append(now_2)
 
-MINUTES_IN_DAY = 1440
 
 """
 HTML PAGE RENDERING
@@ -47,14 +48,14 @@ def hello_world():
     d = datetime.now()
     rn = d.strftime("%H:%M:%S")
 
-    diff_array = sort_arr_time(alarms_selected)
+    alarms_sel_sorted_2d = sort_arr_time(alarms_sel)
     with open('listfile.data', 'wb') as alarms:
-        pickle.dump([diff_array, rn], alarms)      
+        pickle.dump([alarms_sel_sorted_2d, rn], alarms) 
 
     return render_template(
         "index.html",
-        alarms_list = list_of_alarms,
-        alarms_selcted = alarms_selected
+        alarms_list = sort_list(list_of_alarms),
+        alarms_selcted = alarms_sel
         )
 
 #
@@ -91,14 +92,14 @@ def update_alarms():
     form_data = request.form
     form_checked = request.form.getlist("checkbox")
     form_checkedN = request.form.getlist("checkboxN")
-    alarms_selected.clear()
+    alarms_sel.clear()
 
     for j in form_checkedN:
-        alarms_selected.append(j)
+        alarms_sel.append(j)
     for k in form_checked:
-        alarms_selected.append(k)
+        alarms_sel.append(k)
 
-    sort_list(alarms_selected)
+    sort_list(alarms_sel)
    
     return redirect(url_for("hello_world"))
 
