@@ -4,7 +4,7 @@ import pickle
 import logging
 
 from datetime import datetime
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 
 from support_functions import sort_arr_time_2d
 
@@ -71,7 +71,11 @@ while True:
                 counter = counter + 1
                 logger.critical("**ALARM DONE**")
                 proc = Popen(['gedit', 'file.txt'])
-                #proc.wait()
+                try:
+                    outs, errs = proc.communicate(timeout=10)
+                except TimeoutExpired:
+                    proc.kill()
+                    outs,errs = proc.communicate()
             else:
                 pass
                 logger.debug("It Is Not Time")
