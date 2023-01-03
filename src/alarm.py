@@ -28,7 +28,7 @@ else:
 if os.path.exists("std.log"):
     os.remove("std.log")
 # creates logger object
-logging.basicConfig(filename='std.log', filemode='a', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='std.log', filemode='a', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
 logger.info("Starting Log File")
 
@@ -40,12 +40,14 @@ for i in diff_array:
 
 while True: 
     loop_counter = loop_counter + 1
-        
+
+    # read from data file 
     logger.debug(f'Loop Start: {loop_counter}')
     with open('listfile.data', 'rb') as alarms:
         diff_array, rn = pickle.load(alarms)
         logger.debug("Diff Array Has Been Read")
     
+    # sort array
     if diff_array != None:
         diff_array = sort_arr_time_2d(diff_array)
         logger.debug("Array Resorted")

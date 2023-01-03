@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 
 # Data Files
-./src/listfile.data
-./src/std.log
+src/listfile.data
+src/std.log

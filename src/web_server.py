@@ -131,4 +131,4 @@ if __name__=="__main__":
         pickle.dump([[], 0], alarms) 
 
     p = Popen([sys.executable, '-u', './alarm.py'], stdout = PIPE, stderr=STDOUT, bufsize=1)
-    app.run()
+    app.run(host="0.0.0.0")
