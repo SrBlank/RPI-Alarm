@@ -14,6 +14,7 @@ rn_old = 0
 counter = 0
 loop_counter = 0
 MINUTES_IN_DAY = 1440
+ALARM_PLAYTIME = 10
 
 # waits until listfile.data is created by web_server
 while not os.path.exists("listfile.data"):
@@ -53,6 +54,7 @@ while True:
         logger.debug("Array Resorted")
 
     if diff_array != None:
+        # update array if necessary to reset counter
         if rn != rn_old:
             logger.debug("Array Updated")
             rn_old = rn
@@ -63,7 +65,8 @@ while True:
         elif rn == rn_old:
             logger.debug("Array Not Updated")
             pass
-
+        
+        # iterate by counter and check if the time matches then play sound if so for ALARM_PLAYTIME seconds
         if counter < len(temp_array):
             alarm_time = temp_array[counter][1]
             d = datetime.now()
@@ -72,9 +75,9 @@ while True:
             if alarm_time == curr_time:
                 counter = counter + 1
                 logger.critical("**ALARM DONE**")
-                proc = Popen(['gedit', 'file.txt'])
+                proc = Popen(['mpg123', './alarm_sounds/generic_alarm.mp3'])
                 try:
-                    outs, errs = proc.communicate(timeout=10)
+                    outs, errs = proc.communicate(timeout=ALARM_PLAYTIME)
                 except TimeoutExpired:
                     proc.kill()
                     outs,errs = proc.communicate()
