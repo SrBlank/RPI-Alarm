@@ -20,7 +20,7 @@ Finally start the web server by running `python3 web_server.py`. You will see tw
 
 ## Configurations
 
-#### Adding More Alarms
+### Adding More Alarms
 
 Alarms must be of `.mp3` extension to play by default. To install new alarms either download .mp3 files or use youtube-dl to download your own from youtube. To use youtube-dl download it with the command below:
 
@@ -36,7 +36,7 @@ youtube-dl --extract-audio --audio-format mp3 <youtube link>
 Finally open `alarm.py` and change the const variable `ALARM_TO_PLAY` to the alarm that was just downloaded. It might be easier to change the name of the file downloaded as youtube-dl creates long file names.
 
 
-#### Changing Alarm Playtime
+### Changing Alarm Playtime
 
 Navigate to `alarm.py` in `/src/` and change the const variable `ALARM_PLAYTIME` to an integer. This will play the alarm for a number of seconds.
 
