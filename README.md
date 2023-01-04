@@ -40,8 +40,30 @@ Finally open `alarm.py` and change the const variable `ALARM_TO_PLAY` to the ala
 
 Navigate to `alarm.py` in `/src/` and change the const variable `ALARM_PLAYTIME` to an integer. This will play the alarm for a number of seconds.
 
+## Future Features
 
-
+- Beautify Website
+    - Signify submission 
+        - flask flashes?
+    - Show current time
+        - java script
+    - Show next alarm to be played
+        - java script
+    - Maybe show what mp3 file will be played
+- Code
+    - Have listfile.data not be overwritten every time
+    - Create a config file
+        - Alarm playblack time
+        - Directory?
+        - Add alarms?
+    - Clean up alarm file
+    - Different alarm sound for different alarms?
+    - Set up days for alarms?
+- Turn off Alarm
+    - Timer
+    - Button
+    - Sensor
+    
 ## Disclaimer
 This project is still a WIP. The code runs locally as far I have tested it and the next step is to test it on the RPI since the develeopment has been on my laptop in WSL. Below is a list of things I must do before I am able to develop this project further.
 1. ~~Set up RPI~~
