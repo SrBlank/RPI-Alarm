@@ -11,17 +11,30 @@
       </div>
     </div>
 
-    <div class="checkbox_container">
-      <div class="checkbox_content">
+    <div class="flash_container">
+      <div class="flash_content">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages  %}
+                <p><strong>{{message}}</strong></p><br>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+
+    <div class="forms_container">
+      <div class="forms_content">
         
         <form method="POST" action="/process_time">
           <input type ="time" name="time_box">
           <br>
-          <input type="submit" value="Submit">
+          <input type="submit" value="Enter New Alarm">
         </form>
         
 
         <form method="POST" action="/update_alarms">
+          <br>
           <ul class="checkbox_grid">
             {% for x in alarms_list %}
               {% if x in alarms_selcted %}
@@ -31,14 +44,22 @@
               {% endif %} 
               {% endfor %}
           </ul>
-          <br><br><br>
-          <input type="submit" value = "Submit"/>
+          <ul>
+            <br><br><br><br><br><br><br><br>
+          </ul> 
+          <input type="submit" value = "Update Alarms"/>
         </form>
         
         <form method="POST" action="/removeablealarms">
           <br>
           <input type="submit" value = "Remove Alarms"/>
         </form>
+
+      </div>
+    </div>
+
+    <div class="footer_container">
+      <div class="footer_content">
 
       </div>
     </div>

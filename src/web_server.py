@@ -15,7 +15,9 @@ app.secret_key = os.getenv('app_secret')
 
 MINUTES_IN_DAY = 1440
 
-list_of_alarms = [] #['18:45', '01:00', '10:15', '01:20', '00:01', '21:39']
+list_of_alarms = ['18:45', '01:00', '10:15', '01:20', '00:01', '21:39', '01:01', '01:02', '01:03', '01:04',
+                    '01:05', '01:06', '01:07', '01:08', '01:09', '01:10', '01:11', '01:12', '01:13', '01:14',
+                    '01:15']
 alarms_sel = [] # ['18:45', '01:00', '10:15', '01:20', '00:01', '22:40', '22:39']
 alarms_sel_sorted_2d = []
 
@@ -100,6 +102,7 @@ def update_alarms():
         alarms_sel.append(k)
 
     sort_list(alarms_sel)
+    flash('Alarms Updated!')
    
     return redirect(url_for("hello_world"))
 
@@ -112,9 +115,10 @@ def process_time():
 
     for i in list_of_alarms:
         if i == form_data['time_box']:
-            flash('duplicate')
+            flash('Alarm Already Exists!')
             return redirect(url_for("hello_world"))
 
+    flash('Alarm ' +  form_data['time_box'] + ' Added!')
     list_of_alarms.append(form_data['time_box'])
     sort_list(list_of_alarms)
     
@@ -131,4 +135,4 @@ if __name__=="__main__":
         pickle.dump([[], 0], alarms) 
 
     p = Popen([sys.executable, '-u', './alarm.py'], stdout = PIPE, stderr=STDOUT, bufsize=1)
-    app.run(host="0.0.0.0")
+    app.run()
