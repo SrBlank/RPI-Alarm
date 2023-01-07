@@ -42,9 +42,11 @@ Navigate to `alarm.py` in `/src/` and change the const variable `ALARM_PLAYTIME`
 
 ## Future Features
 
+This project is still a WIP. I have implemented this code on my RPI4 and I am currently testing it. The core functionality works and is waking me up on a daily basis. Below is a list of feautres I plan to add.
+
 - Beautify Website
-    - Signify submission 
-        - flask flashes?
+    - ~~Signify submission ~~
+        - ~~flask flashes?~~
     - Show current time
         - java script
     - Show next alarm to be played
@@ -64,14 +66,6 @@ Navigate to `alarm.py` in `/src/` and change the const variable `ALARM_PLAYTIME`
     - Button
     - Sensor
     
-## Disclaimer
-This project is still a WIP. The code runs locally as far I have tested it and the next step is to test it on the RPI since the develeopment has been on my laptop in WSL. Below is a list of things I must do before I am able to develop this project further.
-1. ~~Set up RPI~~
-2. ~~Buy a router~~
-    - ~~Since the apartments internet I think restricts hosting servers~~ 
-    - ~~Still need to look into this~~
-3. Find a solution to having two audio outputs from two computers into one speaker
-    - This is so I can have my desktop and RPI use the same speaker
-4. Integrate and test
+
 
 
