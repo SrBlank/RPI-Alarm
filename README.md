@@ -45,7 +45,7 @@ Navigate to `alarm.py` in `/src/` and change the const variable `ALARM_PLAYTIME`
 This project is still a WIP. I have implemented this code on my RPI4 and I am currently testing it. The core functionality works and is waking me up on a daily basis. Below is a list of feautres I plan to add.
 
 - Beautify Website
-    - ~~Signify submission ~~
+    - ~~Signify submission~~
         - ~~flask flashes?~~
     - Show current time
         - java script
