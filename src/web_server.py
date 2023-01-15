@@ -15,31 +15,31 @@ app.secret_key = os.getenv('app_secret')
 
 MINUTES_IN_DAY = 1440
 
-list_of_alarms = ['18:45', '01:00', '10:15', '01:20', '00:01', '21:39', '01:01', '01:02', '01:03', '01:04',
-                    '01:05', '01:06', '01:07', '01:08', '01:09', '01:10', '01:11', '01:12', '01:13', '01:14',
-                    '01:15']
+list_of_alarms = [] #['18:45', '01:00', '10:15', '01:20', '00:01', '21:39', '01:01', '01:02', '01:03', '01:04',
+                    #'01:05', '01:06', '01:07', '01:08', '01:09', '01:10', '01:11', '01:12', '01:13', '01:14',
+                    #'01:15']
 alarms_sel = [] # ['18:45', '01:00', '10:15', '01:20', '00:01', '22:40', '22:39']
 alarms_sel_sorted_2d = []
 
 #### THIS CODE WILL ADD 2 ALARMS #### 
-# d = datetime.now()
-# min_1 = str(int(d.strftime("%M"))+1)
-# hours = d.strftime("%H")
-# min_2 = str(int(d.strftime("%M"))+2)
-# if len(min_1) == 1:
-#     now_1 = hours + ":0" + min_1 
-#     now_2 = hours + ":0" + min_2 
-# else:
-#     now_1 = hours + ":" + min_1
-#     now_2 = hours + ":" + min_2 
-# add_el = [1, now_1]
-# #alarms_sel_sorted_2d.append(add_el)
-# add_el = [1, now_2]
-# #alarms_sel_sorted_2d.append(add_el)
-# list_of_alarms.append(now_1)
-# list_of_alarms.append(now_2)
-# alarms_sel.append(now_1)
-# alarms_sel.append(now_2)
+d = datetime.now()
+min_1 = str(int(d.strftime("%M"))+1)
+hours = d.strftime("%H")
+min_2 = str(int(d.strftime("%M"))+2)
+if len(min_1) == 1:
+    now_1 = hours + ":0" + min_1 
+    now_2 = hours + ":0" + min_2 
+else:
+    now_1 = hours + ":" + min_1
+    now_2 = hours + ":" + min_2 
+add_el = [1, now_1]
+#alarms_sel_sorted_2d.append(add_el)
+add_el = [1, now_2]
+#alarms_sel_sorted_2d.append(add_el)
+list_of_alarms.append(now_1)
+list_of_alarms.append(now_2)
+alarms_sel.append(now_1)
+alarms_sel.append(now_2)
 
 
 """
@@ -135,4 +135,4 @@ if __name__=="__main__":
         pickle.dump([[], 0], alarms) 
 
     #p = Popen([sys.executable, '-u', './alarm.py'], stdout = PIPE, stderr=STDOUT, bufsize=1)
-    app.run()
+    app.run(host='0.0.0.0')
