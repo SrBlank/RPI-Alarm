@@ -3,7 +3,6 @@ import time
 import pickle
 import logging
 import signal
-import RPi.GPIO as GPIO
 
 from datetime import datetime
 from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
@@ -31,6 +30,7 @@ loop_counter = 0
 MINUTES_IN_DAY = 1440
 ALARM_PLAYTIME = 3
 ALARM_TO_PLAY = "./alarm_sounds/generic_alarm.mp3"
+ENABLE_BUTTON = True
 
 global STAY_IN_LOOP
 STAY_IN_LOOP = True
@@ -40,13 +40,16 @@ def alarm_stop_callback(channel):
     global STAY_IN_LOOP
     STAY_IN_LOOP = False
 
+if ENABLE_BUTTON:
+    import RPi.GPIO as GPIO
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.add_event_detect(10, GPIO.RISING, callback=alarm_stop_callback)
+    logger.debug("Intiliazed Variables and GPIO")
+else:
+    logger.debug("Intilizaed Variables, button is disabled")
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.add_event_detect(10, GPIO.RISING, callback=alarm_stop_callback)
-
-logger.debug("Intiliazed Variables and GPIO")
 logger.debug("Waiting for listfile.data to be ready")
 
 """ LISTFILE.DATA INTILIZATION"""
@@ -58,6 +61,15 @@ else:
     raise ValueError("listfile.data isn't a file!")
 
 logger.debug("listfile.data is ready, starting loop")
+
+def playAlarm():
+    proc = Popen(["mpg123", ALARM_TO_PLAY])
+    try:
+        outs, errs = proc.communicate(timeout=ALARM_PLAYTIME)
+    except TimeoutExpired:
+        proc.kill()
+        outs, errs = proc.communicate()
+    logger.critical("** ALARM **")
 
 """ MAIN LOOP """
 while True:
@@ -95,14 +107,11 @@ while True:
                 counter = counter + 1
                 diff_array = sort_arr_time_2d(diff_array)
 
-                while STAY_IN_LOOP:  # Repeat audio until button has been pressed
-                    proc = Popen(["mpg123", ALARM_TO_PLAY])
-                    try:
-                        outs, errs = proc.communicate(timeout=ALARM_PLAYTIME)
-                    except TimeoutExpired:
-                        proc.kill()
-                        outs, errs = proc.communicate()
-                    logger.critical("** ALARM **")
+                if not ENABLE_BUTTON:
+                    playAlarm()
+                else:
+                    while STAY_IN_LOOP:  # Repeat audio until button has been pressed
+                        playAlarm()
                 logger.critical("** ALARM DONE **")
 
                 STAY_IN_LOOP = True  # Reset loop variable for next alarm
@@ -114,3 +123,5 @@ while True:
 
     logger.debug(f"Loop End: {loop_counter}")
     time.sleep(3)
+
+
