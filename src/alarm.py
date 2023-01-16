@@ -9,8 +9,19 @@ from datetime import datetime
 from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 from support_functions import sort_arr_time_2d
 
+if os.path.exists("std.log"):
+    os.remove("std.log")
+# create logger object
+logging.basicConfig(
+    filename="std.log",
+    filemode="a",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
+logger = logging.getLogger()
+logger.info("Starting Log File")
+
 """ INITILIZATION """
-temp_array = [] 
 diff_array = []
 diff_arr_time_curr = 0
 diff_arr_time_prev = 0
@@ -29,38 +40,28 @@ def alarm_stop_callback(channel):
     global STAY_IN_LOOP
     STAY_IN_LOOP = False
 
-
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.add_event_detect(10, GPIO.RISING, callback=alarm_stop_callback)
 
-# waits until listfile.data is created by web_server
+logger.debug("Intiliazed Variables and GPIO")
+logger.debug("Waiting for listfile.data to be ready")
+
+""" LISTFILE.DATA INTILIZATION"""
 while not os.path.exists("listfile.data"):
     time.sleep(1)
-# validates listfile.data
 if os.path.isfile("listfile.data"):
     pass
 else:
     raise ValueError("listfile.data isn't a file!")
 
-# removes old log if one exists
-if os.path.exists("std.log"):
-    os.remove("std.log")
-# creates logger object
-logging.basicConfig(
-    filename="std.log",
-    filemode="a",
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
-logger = logging.getLogger()
-logger.info("Starting Log File")
+logger.debug("listfile.data is ready, starting loop")
 
+""" MAIN LOOP """
 while True:
     loop_counter = loop_counter + 1
     
-    # read from data file
     while True:
         with open("listfile.data", "rb") as alarms:
             diff_array, diff_arr_time_curr = pickle.load(alarms)
@@ -84,18 +85,15 @@ while True:
 
         # iterate by counter and check if the time matches then play sound if so for ALARM_PLAYTIME seconds
         if counter < len(diff_array):
-            # grab first time from temp_array
             alarm_time = diff_array[counter][1]
-            # grab current time
             d = datetime.now()
             curr_time = d.strftime("%H:%M")
 
             logger.info("Time Being Checked: " + alarm_time)
-            if alarm_time == curr_time: # check if it is time
+            if alarm_time == curr_time: 
                 counter = counter + 1
                 diff_array = sort_arr_time_2d(diff_array)
-                logger.critical("**ALARM DONE**")
-                
+
                 while STAY_IN_LOOP: # Repeat audio until button has been pressed
                     proc = Popen(["mpg123", ALARM_TO_PLAY])
                     try:
@@ -103,8 +101,8 @@ while True:
                     except TimeoutExpired:
                         proc.kill()
                         outs, errs = proc.communicate()
-                    logger.critical("**ALARM PLAYED**")
-                logger.critical("**BUTTON PRESSED**")
+                    logger.critical("** ALARM **")
+                logger.critical("** BUTTON PRESSED **")
 
                 STAY_IN_LOOP = True # Reset loop variable for next alarm
             else:
