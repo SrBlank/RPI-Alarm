@@ -28,7 +28,7 @@ diff_arr_time_prev = 0
 counter = 0
 loop_counter = 0
 
-MINUTES_IN_DAY = 1440 
+MINUTES_IN_DAY = 1440
 ALARM_PLAYTIME = 3
 ALARM_TO_PLAY = "./alarm_sounds/generic_alarm.mp3"
 
@@ -39,6 +39,7 @@ STAY_IN_LOOP = True
 def alarm_stop_callback(channel):
     global STAY_IN_LOOP
     STAY_IN_LOOP = False
+
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
@@ -61,7 +62,7 @@ logger.debug("listfile.data is ready, starting loop")
 """ MAIN LOOP """
 while True:
     loop_counter = loop_counter + 1
-    
+
     while True:
         with open("listfile.data", "rb") as alarms:
             diff_array, diff_arr_time_curr = pickle.load(alarms)
@@ -90,11 +91,11 @@ while True:
             curr_time = d.strftime("%H:%M")
 
             logger.info("Time Being Checked: " + alarm_time)
-            if alarm_time == curr_time: 
+            if alarm_time == curr_time:
                 counter = counter + 1
                 diff_array = sort_arr_time_2d(diff_array)
 
-                while STAY_IN_LOOP: # Repeat audio until button has been pressed
+                while STAY_IN_LOOP:  # Repeat audio until button has been pressed
                     proc = Popen(["mpg123", ALARM_TO_PLAY])
                     try:
                         outs, errs = proc.communicate(timeout=ALARM_PLAYTIME)
@@ -102,9 +103,9 @@ while True:
                         proc.kill()
                         outs, errs = proc.communicate()
                     logger.critical("** ALARM **")
-                logger.critical("** BUTTON PRESSED **")
+                logger.critical("** ALARM DONE **")
 
-                STAY_IN_LOOP = True # Reset loop variable for next alarm
+                STAY_IN_LOOP = True  # Reset loop variable for next alarm
             else:
                 pass
                 logger.debug("It Is Not Time")

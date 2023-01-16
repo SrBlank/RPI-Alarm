@@ -1,6 +1,11 @@
 # RPI-Alarm
 This is a flask web server that can be ran on any linux computer that is then connected to a speaker. The user will be able to access the web server and set alarms which the server will then execute when it is time.
 
+## Installiation 
+---
+## Setup up Button
+Using using these [instructions](https://raspberrypihq.com/use-a-push-button-with-raspberry-pi-gpio/) you will be able to set up a button to your raspberry pi. As of now the pins used in the link are the same ones used in this project.
+
 ## Setting up and Running Server
 Clone the repository onto the computer you want hosting the server. Then install the Python3 requirments by doing:
 
@@ -58,13 +63,13 @@ This project is still a WIP. I have implemented this code on my RPI4 and I am cu
         - Alarm playblack time
         - Directory?
         - Add alarms?
-    - Clean up alarm file
+    - ~~Clean up alarm file~~
     - Different alarm sound for different alarms?
     - Set up days for alarms?
-- Turn off Alarm
-    - Timer
-    - Button
-    - Sensor
+- ~~Turn off Alarm~~
+    - ~~Timer~~
+    - ~~Button~~
+    - ~~Sensor~~
     
 
 
