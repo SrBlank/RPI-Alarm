@@ -14,7 +14,7 @@ if os.path.exists("std.log"):
 logging.basicConfig(
     filename="std.log",
     filemode="a",
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger()
@@ -76,10 +76,12 @@ while True:
     loop_counter = loop_counter + 1
 
     while True:
+        logger.debug("finding diff_array")
         with open("listfile.data", "rb") as alarms:
             diff_array, diff_arr_time_curr = pickle.load(alarms)
         logger.debug("Diff Array Has Been Read")
-        if diff_array != []:
+        if diff_array != [] and diff_array is not None:
+            logger.debug("found diff_array")
             break
         time.sleep(1)
 
@@ -92,6 +94,11 @@ while True:
         elif diff_arr_time_curr == diff_arr_time_prev:
             # reset counter if it has reached the max array len and it hasnt been updated
             if counter == len(diff_array):
+                d = datetime.now()
+                curr_time = d.strftime("%H:%M")
+                if diff_array[0][1] == curr_time:
+                    logger.debug("sleeping")
+                    time.sleep(60)
                 counter = 0
                 logger.debug("counter updated")
             logger.debug("Array Not Updated")
@@ -108,11 +115,12 @@ while True:
                 diff_array = sort_arr_time_2d(diff_array)
 
                 if not ENABLE_BUTTON:
+                    logger.critical("** ALARM DONE NO BUTTON **")
                     playAlarm()
                 else:
+                    logger.critical("** ALARM DONE WITH BUTTON **")
                     while STAY_IN_LOOP:  # Repeat audio until button has been pressed
                         playAlarm()
-                logger.critical("** ALARM DONE **")
 
                 STAY_IN_LOOP = True  # Reset loop variable for next alarm
             else:
@@ -123,5 +131,3 @@ while True:
 
     logger.debug(f"Loop End: {loop_counter}")
     time.sleep(3)
-
-

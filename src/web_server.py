@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv('app_secret')
 
 MINUTES_IN_DAY = 1440
-ADD_2_ALARMS = True
+ADD_2_ALARMS = False
 DEL_LISTFILE = True
 
 list_of_alarms = [] 
@@ -136,5 +136,5 @@ if __name__=="__main__":
         with open('listfile.data', 'wb') as alarms:
             pickle.dump([[], 0], alarms) 
 
-    p = Popen([sys.executable, '-u', './alarm.py'], stdout = PIPE, stderr=STDOUT, bufsize=1)
+    #p = Popen([sys.executable, '-u', './alarm.py'], stdout = PIPE, stderr=STDOUT, bufsize=1)
     app.run(host='0.0.0.0')
