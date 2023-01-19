@@ -14,7 +14,7 @@ if os.path.exists("std.log"):
 logging.basicConfig(
     filename="std.log",
     filemode="a",
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger()
