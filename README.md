@@ -58,18 +58,20 @@ This project is still a WIP. I have implemented this code on my RPI4 and I am cu
         - java script
     - Maybe show what mp3 file will be played
 - Code
-    - Have listfile.data not be overwritten every time
+    - ~~Have listfile.data not be overwritten every time~~
+    - Implement alarm class for customizability
+        - Different alarm sound for different alarms?
+        - Set up days for alarms?
+    - Add a nap button which will create an alarm that will play in X min
     - Create a config file
         - Alarm playblack time
         - Directory?
         - Add alarms?
     - ~~Clean up alarm file~~
-    - Different alarm sound for different alarms?
-    - Set up days for alarms?
 - ~~Turn off Alarm~~
     - ~~Timer~~
     - ~~Button~~
-    - ~~Sensor~~
+    - Sensor
     
 
 
