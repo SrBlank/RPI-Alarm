@@ -8,13 +8,14 @@ from dotenv import load_dotenv, find_dotenv
 from flask import Flask, render_template, redirect, url_for, request, flash
 
 from support_functions import sort_arr_time, sort_list
+from alarm_class import Alarm
 
 load_dotenv(find_dotenv())
 app = Flask(__name__)
 app.secret_key = os.getenv('app_secret')
 
 MINUTES_IN_DAY = 1440
-ADD_2_ALARMS = False
+ADD_2_ALARMS = True
 DEL_LISTFILE = True
 
 list_of_alarms = [] 

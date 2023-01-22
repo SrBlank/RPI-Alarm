@@ -6,7 +6,9 @@ import signal
 
 from datetime import datetime
 from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
+
 from support_functions import sort_arr_time_2d
+from alarm_class import Alarm
 
 if os.path.exists("std.log"):
     os.remove("std.log")
@@ -28,9 +30,10 @@ counter = 0
 loop_counter = 0
 
 MINUTES_IN_DAY = 1440
-ALARM_PLAYTIME = 3
+ALARM_PLAYTIME = 5
 ALARM_TO_PLAY = "./alarm_sounds/generic_alarm.mp3"
-ENABLE_BUTTON = True
+ENABLE_BUTTON = False
+GPIO_INPUT_PIN = 10
 
 global STAY_IN_LOOP
 STAY_IN_LOOP = True
@@ -44,8 +47,8 @@ if ENABLE_BUTTON:
     import RPi.GPIO as GPIO
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.add_event_detect(10, GPIO.RISING, callback=alarm_stop_callback)
+    GPIO.setup(GPIO_INPUT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.add_event_detect(GPIO_INPUT_PIN, GPIO.RISING, callback=alarm_stop_callback)
     logger.debug("Intiliazed Variables and GPIO")
 else:
     logger.debug("Intilizaed Variables, button is disabled")
