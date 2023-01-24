@@ -126,6 +126,15 @@ def process_time():
     
     return redirect(url_for("hello_world"))
 
+#
+# New function for getting new alarm form data
+#
+@app.route("/newAlarm", methods=['POST'])
+def new_alarm():
+    form_data = request.form
+    print(form_data)
+    return redirect(url_for("hello_world"))
+    
 if __name__=="__main__":
     if DEL_LISTFILE:
         if os.path.exists("listfile.data"):

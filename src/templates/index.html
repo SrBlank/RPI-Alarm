@@ -22,15 +22,41 @@
         {% endwith %}
       </div>
     </div>
-
+    
     <div class="forms_container">
       <div class="forms_content">
-        
+        <!--RIGHT HERE-->
+        <div class="openBtn">
+          <button class="openButton" onclick="openForm()"><strong>Enter New Alarm</strong></button>
+        </div>
+        <div class="loginPopup">
+          <div class="formPopup" id="popupForm">
+            <form method="POST" action="/newAlarm" class="formContainer">
+              <h2>Enter New Alarm</h2>
+              <label for="time_prompt">
+                <strong>Time</strong>
+              </label>
+              <br><input type="time" id="time_prompt" name="time_prompt" required>
+              <br><label for="playback_time">
+                <strong>Playback Time</strong>
+              </label>
+              <br><input type="number" id="playback_time" placeholder="Enter Integer" name="playback_time">
+              <!--<br><label for="enable_button">
+                <strong>Enable Button</strong>
+              </label>
+              <br><input type="radio" id="enable_button" name="enable_button">-->
+              <br><button type="submit" class="btn">Add</button>
+              <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </form>
+          </div>
+        </div>
+
+        <!--
         <form method="POST" action="/process_time">
           <input type ="time" name="time_box">
           <br>
           <input type="submit" value="Enter New Alarm">
-        </form>
+        </form>-->
         
 
         <form method="POST" action="/update_alarms">
@@ -65,8 +91,14 @@
     </div>
 
   </form>
-  <script> src="../static/clock.js" </script>
+  <!--script> src="../static/clock.js" </script>-->
+  <script>
+    function openForm() {
+      document.getElementById("popupForm").style.display = "block";
+    }
+    function closeForm() {
+      document.getElementById("popupForm").style.display = "none";
+    }
+  </script>
   </body>
 </html>
-
-
