@@ -1,6 +1,6 @@
 
 class Alarm(object):
-    def __init__(self, time="--:--", playtime=3):
+    def __init__(self, time, playtime=3):
         self.time = time
         self.playtime = playtime
         self.button = True
@@ -8,6 +8,8 @@ class Alarm(object):
     
     def __repr__(self):
         return self.time  + " " + str(self.playtime) 
+    def __contains__(self, item):
+        return item in self.time
 """ 
 employees = [
     Alarm('11:11', 4),

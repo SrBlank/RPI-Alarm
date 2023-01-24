@@ -7,7 +7,7 @@ from subprocess import Popen, PIPE, STDOUT
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, render_template, redirect, url_for, request, flash
 
-from support_functions import sort_arr_time, sort_list, sort_list_check, sort_arr_time_check
+from support_functions import sort_arr_time, sort_list
 from alarm_class import Alarm
 
 load_dotenv(find_dotenv())
@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv('app_secret')
 
 MINUTES_IN_DAY = 1440
-ADD_2_ALARMS = False
+ADD_2_ALARMS = True
 DEL_LISTFILE = True
 
 list_of_alarms = [] 
@@ -35,17 +35,11 @@ if ADD_2_ALARMS:
         now_1 = hours + ":" + min_1
         now_2 = hours + ":" + min_2 
     
-    add_el = [1, now_1]
-    #alarms_sel_sorted_2d.append(add_el)
-    add_el = [1, now_2]
-    #alarms_sel_sorted_2d.append(add_el)
-    list_of_alarms.append(now_1)
-    list_of_alarms.append(now_2)
-    alarms_sel.append(now_1)
-    alarms_sel.append(now_2)
+    list_of_alarms.append(Alarm(now_1))
+    list_of_alarms.append(Alarm(now_2))
+    alarms_sel.append(Alarm(now_1))
+    alarms_sel.append(Alarm(now_2))
 
-list_of_alarms.append(Alarm("11:11", 11))
-list_of_alarms.append(Alarm("12:33", 3))
 """
 HTML PAGE RENDERING
 """
@@ -54,19 +48,19 @@ def hello_world():
     d = datetime.now()
     rn = d.strftime("%H:%M:%S")
 
-    alarms_sel_sorted_2d = sort_arr_time_check(alarms_sel) # PROBLEM
+    alarms_sel_sorted_2d = sort_arr_time(alarms_sel) 
     with open('listfile.data', 'wb') as alarms:
         pickle.dump([alarms_sel_sorted_2d, rn], alarms) 
 
-    sort_list(list_of_alarms)  
-    list_of_alarms_times = []
-    for i in list_of_alarms: 
-        list_of_alarms_times.append(i.time)
+    sort_list(list_of_alarms) 
+    alarms_sel_times = []
+    for i in alarms_sel: 
+        alarms_sel_times.append(i.time)
 
     return render_template(
         "index.html",
-        alarms_list = list_of_alarms_times, #list_of_alarms, #sort_list(list_of_alarms),
-        alarms_selcted = alarms_sel 
+        alarms_list = list_of_alarms,
+        alarms_selcted = alarms_sel_times 
         )
 
 #
@@ -103,13 +97,13 @@ def update_alarms():
     form_checked = request.form.getlist("checkbox")
     form_checkedN = request.form.getlist("checkboxN")
     alarms_sel.clear() 
-
+    
     for j in form_checkedN:
-        alarms_sel.append(j) 
+        alarms_sel.append(Alarm(j)) 
     for k in form_checked:
-        alarms_sel.append(k)
+        alarms_sel.append(Alarm(k))
 
-    sort_list_check(alarms_sel) # NEED TO FIX
+    sort_list(alarms_sel)
     flash('Alarms Updated!')
    
     return redirect(url_for("hello_world"))
@@ -128,6 +122,9 @@ def new_alarm():
 
     if new_time in list_of_alarms:
         flash("Alarm Already Exists!")
+        return redirect(url_for("hello_world"))
+    if isinstance(new_playback, int):
+        flash("Playback Must Be An Integer!")
         return redirect(url_for("hello_world"))
     if len(new_playback) == 0:
         new_playback = 3 # CHANGE TO ALARM CONSTANT 

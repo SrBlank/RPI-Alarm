@@ -63,10 +63,10 @@
           <br>
           <ul class="checkbox_grid">
             {% for x in alarms_list %}
-              {% if x in alarms_selcted %}
-                <li><input type="checkbox" name="checkbox" value={{x}} checked /><label for="text1">{{x}}</label></li>
+              {% if x.time in alarms_selcted  %}
+                <li><input type="checkbox" name="checkbox" value={{x}} checked /><label for="text1">{{x.time}}</label></li>
               {% else %}
-                <li><input type="checkbox" name="checkboxN" value={{x}} /><label for="text1">{{x}}</label></li>
+                <li><input type="checkbox" name="checkboxN" value={{x}} /><label for="text1">{{x.time}}</label></li>
               {% endif %} 
               {% endfor %}
           </ul>
