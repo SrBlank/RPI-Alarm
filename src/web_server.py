@@ -7,7 +7,7 @@ from subprocess import Popen, PIPE, STDOUT
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, render_template, redirect, url_for, request, flash
 
-from support_functions import sort_arr_time, sort_list
+from support_functions import sort_arr_time, sort_list, sort_list_check, sort_arr_time_check
 from alarm_class import Alarm
 
 load_dotenv(find_dotenv())
@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv('app_secret')
 
 MINUTES_IN_DAY = 1440
-ADD_2_ALARMS = True
+ADD_2_ALARMS = False
 DEL_LISTFILE = True
 
 list_of_alarms = [] 
@@ -34,6 +34,7 @@ if ADD_2_ALARMS:
     else:
         now_1 = hours + ":" + min_1
         now_2 = hours + ":" + min_2 
+    
     add_el = [1, now_1]
     #alarms_sel_sorted_2d.append(add_el)
     add_el = [1, now_2]
@@ -43,7 +44,8 @@ if ADD_2_ALARMS:
     alarms_sel.append(now_1)
     alarms_sel.append(now_2)
 
-
+list_of_alarms.append(Alarm("11:11", 11))
+list_of_alarms.append(Alarm("12:33", 3))
 """
 HTML PAGE RENDERING
 """
@@ -52,14 +54,19 @@ def hello_world():
     d = datetime.now()
     rn = d.strftime("%H:%M:%S")
 
-    alarms_sel_sorted_2d = sort_arr_time(alarms_sel)
+    alarms_sel_sorted_2d = sort_arr_time_check(alarms_sel) # PROBLEM
     with open('listfile.data', 'wb') as alarms:
         pickle.dump([alarms_sel_sorted_2d, rn], alarms) 
 
+    sort_list(list_of_alarms)  
+    list_of_alarms_times = []
+    for i in list_of_alarms: 
+        list_of_alarms_times.append(i.time)
+
     return render_template(
         "index.html",
-        alarms_list = sort_list(list_of_alarms),
-        alarms_selcted = alarms_sel
+        alarms_list = list_of_alarms_times, #list_of_alarms, #sort_list(list_of_alarms),
+        alarms_selcted = alarms_sel 
         )
 
 #
@@ -82,7 +89,6 @@ FORM PROCESSES
 def remove_alarms():
     form_data = request.form
     form_checked = request.form.getlist("checkbox")
-    #print(form_data)
     for i in form_checked:
         list_of_alarms.remove(i)   
         
@@ -96,45 +102,42 @@ def update_alarms():
     form_data = request.form
     form_checked = request.form.getlist("checkbox")
     form_checkedN = request.form.getlist("checkboxN")
-    alarms_sel.clear()
+    alarms_sel.clear() 
 
     for j in form_checkedN:
-        alarms_sel.append(j)
+        alarms_sel.append(j) 
     for k in form_checked:
         alarms_sel.append(k)
 
-    sort_list(alarms_sel)
+    sort_list_check(alarms_sel) # NEED TO FIX
     flash('Alarms Updated!')
    
     return redirect(url_for("hello_world"))
 
-#
-# Function will add a new time to the list
-#
-@app.route("/process_time", methods = ['POST'])
-def process_time():
-    form_data = request.form
-
-    for i in list_of_alarms:
-        if i == form_data['time_box']:
-            flash('Alarm Already Exists!')
-            return redirect(url_for("hello_world"))
-
-    flash('Alarm ' +  form_data['time_box'] + ' Added!')
-    list_of_alarms.append(form_data['time_box'])
-    sort_list(list_of_alarms)
-    
-    return redirect(url_for("hello_world"))
 
 #
 # New function for getting new alarm form data
 #
-@app.route("/newAlarm", methods=['POST'])
+
+@app.route("/process_time", methods=['POST'])
 def new_alarm():
     form_data = request.form
-    print(form_data)
-    return redirect(url_for("hello_world"))
     
+    new_time = form_data["time_prompt"]
+    new_playback = form_data["playback_time"]
+
+    if new_time in list_of_alarms:
+        flash("Alarm Already Exists!")
+        return redirect(url_for("hello_world"))
+    if len(new_playback) == 0:
+        new_playback = 3 # CHANGE TO ALARM CONSTANT 
+    
+    list_of_alarms.append(Alarm(new_time, new_playback))
+    sort_list(list_of_alarms)
+
+    flash("Alarm " + new_time + " added!")
+    return redirect(url_for("hello_world"))
+
 if __name__=="__main__":
     if DEL_LISTFILE:
         if os.path.exists("listfile.data"):
