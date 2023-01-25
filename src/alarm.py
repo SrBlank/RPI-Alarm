@@ -50,11 +50,11 @@ if ENABLE_BUTTON:
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(GPIO_INPUT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.add_event_detect(GPIO_INPUT_PIN, GPIO.RISING, callback=alarm_stop_callback)
-    logger.debug("Intiliazed Variables and GPIO")
+    logger.info("Intiliazed Variables and GPIO")
 else:
-    logger.debug("Intilizaed Variables, button is disabled")
+    logger.info("Intilizaed Variables, button is disabled")
 
-logger.debug("Waiting for listfile.data to be ready")
+logger.info("Waiting for listfile.data to be ready")
 
 """ LISTFILE.DATA INTILIZATION"""
 while not os.path.exists("listfile.data"):
@@ -64,13 +64,12 @@ if os.path.isfile("listfile.data"):
 else:
     raise ValueError("listfile.data isn't a file!")
 
-logger.debug("listfile.data is ready, starting loop")
+logger.info("listfile.data is ready, starting loop")
 
-def playAlarm():
-    #proc = Popen(["mpg123", ALARM_TO_PLAY])
-    proc = Popen(["gedit"])
+def playAlarm(alarm_instance):
+    proc = Popen(["mpg123", alarm_instance.alarm_sound])
     try:
-        outs, errs = proc.communicate(timeout=ALARM_PLAYTIME)
+        outs, errs = proc.communicate(timeout=alarm_instance.playtime)
     except TimeoutExpired:
         proc.kill()
         outs, errs = proc.communicate()
@@ -110,24 +109,24 @@ while True:
 
         # iterate by counter and check if the time matches then play sound if so for ALARM_PLAYTIME seconds
         if counter < len(diff_array):
+            STAY_IN_LOOP = True  # Reset loop variable for next alarm 
+            alarm_instance = diff_array[counter]
             alarm_time = diff_array[counter].time #[1]
             d = datetime.now()
             curr_time = d.strftime("%H:%M")
 
-            logger.info("Time Being Checked: " + alarm_time)
-            if alarm_time == curr_time:
+            logger.info("Time Being Checked: " + alarm_instance.time)
+            if alarm_instance.time == curr_time:
                 counter = counter + 1
                 diff_array = sort_arr_time(diff_array)
 
                 if not ENABLE_BUTTON:
                     logger.critical("** ALARM DONE NO BUTTON **")
-                    playAlarm()
+                    playAlarm(alarm_instance)
                 else:
                     logger.critical("** ALARM DONE WITH BUTTON **")
                     while STAY_IN_LOOP:  # Repeat audio until button has been pressed
-                        playAlarm()
-
-                STAY_IN_LOOP = True  # Reset loop variable for next alarm
+                        playAlarm(alarm_instance)              
             else:
                 pass
                 logger.debug("It Is Not Time")

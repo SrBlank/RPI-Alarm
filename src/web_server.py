@@ -7,7 +7,7 @@ from subprocess import Popen, PIPE, STDOUT
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, render_template, redirect, url_for, request, flash
 
-from support_functions import sort_arr_time, sort_list
+from support_functions import sort_arr_time
 from alarm_class import Alarm
 
 load_dotenv(find_dotenv())
@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv('app_secret')
 
 MINUTES_IN_DAY = 1440
-ADD_2_ALARMS = True
+ADD_2_ALARMS = False
 DEL_LISTFILE = True
 
 list_of_alarms = [] 
@@ -35,9 +35,9 @@ if ADD_2_ALARMS:
         now_1 = hours + ":" + min_1
         now_2 = hours + ":" + min_2 
     
-    list_of_alarms.append(Alarm(now_1))
+    list_of_alarms.append(Alarm(now_1, playtime=6))
     list_of_alarms.append(Alarm(now_2))
-    alarms_sel.append(Alarm(now_1))
+    alarms_sel.append(Alarm(now_1, playtime=6))
     alarms_sel.append(Alarm(now_2))
 
 """
@@ -52,7 +52,7 @@ def hello_world():
     with open('listfile.data', 'wb') as alarms:
         pickle.dump([alarms_sel_sorted_2d, rn], alarms) 
 
-    sort_arr_time(list_of_alarms) 
+    sort_arr_time(list_of_alarms)
     alarms_sel_times = []
     for i in alarms_sel: 
         alarms_sel_times.append(i.time)
@@ -103,10 +103,15 @@ def update_alarms():
     form_checkedN = request.form.getlist("checkboxN")
     alarms_sel.clear() 
     
-    for j in form_checkedN:
-        alarms_sel.append(Alarm(j)) 
-    for k in form_checked:
-        alarms_sel.append(Alarm(k))
+    for checked in form_checkedN:
+        for alarm in list_of_alarms:
+            if checked in alarm:
+                alarms_sel.append(alarm)
+
+    for unchecked in form_checked:
+        for alarm in list_of_alarms:
+            if unchecked in alarm:
+                alarms_sel.append(alarm)
 
     flash('Alarms Updated!')
     return redirect(url_for("hello_world"))
@@ -129,10 +134,11 @@ def new_alarm():
     if isinstance(new_playback, int):
         flash("Playback Must Be An Integer!")
         return redirect(url_for("hello_world"))
-    if len(new_playback) == 0:
+    if new_playback == "":
         list_of_alarms.append(Alarm(new_time)) 
-    else:
-        list_of_alarms.append(Alarm(new_time, new_playback))
+    elif int(new_playback) >= 1:
+        list_of_alarms.append(Alarm(new_time, playtime=int(new_playback))) 
+
 
     flash("Alarm " + new_time + " added!")
     return redirect(url_for("hello_world"))

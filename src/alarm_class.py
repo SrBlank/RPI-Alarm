@@ -9,8 +9,8 @@ class Alarm(object):
     
     def __repr__(self):
         return  self.time  + " " + str(self.playtime) + " " + str(self.time_diff) 
-    def __contains__(self, item):
-        return item in self.time
+    def __contains__(self, time):
+        return time in self.time
 """ 
 employees = [
     Alarm('11:11', 4),
