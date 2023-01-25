@@ -22,6 +22,8 @@ list_of_alarms = []
 alarms_sel = [] 
 alarms_sel_sorted_2d = []
 
+alarm_sounds = os.listdir("./alarm_sounds")
+
 #### THIS CODE WILL ADD 2 ALARMS #### 
 if ADD_2_ALARMS:
     d = datetime.now()
@@ -60,7 +62,8 @@ def hello_world():
     return render_template(
         "index.html",
         alarms_list = list_of_alarms,
-        alarms_selcted = alarms_sel_times 
+        alarms_selcted = alarms_sel_times,
+        alarm_sounds = alarm_sounds
         )
 
 #
@@ -124,9 +127,10 @@ def update_alarms():
 @app.route("/process_time", methods=['POST'])
 def new_alarm():
     form_data = request.form
-    
+
     new_time = form_data["time_prompt"]
     new_playback = form_data["playback_time"]
+    alarm_sounds_form = form_data["alarm_sound"]
 
     if new_time in list_of_alarms:
         flash("Alarm Already Exists!")
@@ -134,10 +138,21 @@ def new_alarm():
     if isinstance(new_playback, int):
         flash("Playback Must Be An Integer!")
         return redirect(url_for("hello_world"))
+
+    add_alarm = Alarm(new_time,
+                    playtime=new_playback,
+                    alarm_sound=alarm_sounds_form
+                    )
+    list_of_alarms.append(add_alarm)
+    """
     if new_playback == "":
         list_of_alarms.append(Alarm(new_time)) 
     elif int(new_playback) >= 1:
-        list_of_alarms.append(Alarm(new_time, playtime=int(new_playback))) 
+        list_of_alarms.append(Alarm(new_time, 
+                            alarm_sounds_form,
+                            playtime=int(new_playback))
+                            ) 
+    """
 
 
     flash("Alarm " + new_time + " added!")

@@ -1,14 +1,14 @@
 
 class Alarm(object):
-    def __init__(self, time, playtime=3):
+    def __init__(self, time, playtime=3, alarm_sound="generic_alarm.mp3"):
         self.time = time
         self.time_diff = None
         self.playtime = playtime
         self.button = True
-        self.alarm_sound = "./alarm_sounds/generic_alarm.mp3" 
+        self.alarm_sound = "./alarm_sounds/" + alarm_sound
     
     def __repr__(self):
-        return  self.time  + " " + str(self.playtime) + " " + str(self.time_diff) 
+        return  self.time  + " " + str(self.playtime) + " " + str(self.alarm_sound) 
     def __contains__(self, time):
         return time in self.time
 """ 

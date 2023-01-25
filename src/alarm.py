@@ -69,7 +69,7 @@ logger.info("listfile.data is ready, starting loop")
 def playAlarm(alarm_instance):
     proc = Popen(["mpg123", alarm_instance.alarm_sound])
     try:
-        outs, errs = proc.communicate(timeout=alarm_instance.playtime)
+        outs, errs = proc.communicate(timeout=int(alarm_instance.playtime))
     except TimeoutExpired:
         proc.kill()
         outs, errs = proc.communicate()

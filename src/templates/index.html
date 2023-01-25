@@ -31,19 +31,29 @@
         <div class="loginPopup">
           <div class="formPopup" id="popupForm">
             <form method="POST" action="/process_time" class="formContainer">
+              <!--START OF FORM-->
               <h2>Enter New Alarm</h2>
+              <!--Time Prompt-->
               <label for="time_prompt">
                 <strong>Time</strong>
               </label>
               <br><input type="time" id="time_prompt" name="time_prompt" required>
+              <!--Playback Time-->
               <br><label for="playback_time">
                 <strong>Playback Time</strong>
               </label>
-              <br><input type="number" id="playback_time" placeholder="Enter Integer" name="playback_time">
-              <!--<br><label for="enable_button">
-                <strong>Enable Button</strong>
+              <br><input type="number" id="playback_time" value="3" name="playback_time">
+              <!--Alarm Sound-->
+              <br><label for="alarm_sound">
+                <strong>Alarm Sound</strong>
               </label>
-              <br><input type="radio" id="enable_button" name="enable_button">-->
+              <br>
+              <select name="alarm_sound" id="alarm_sound">
+                {% for x in alarm_sounds %}
+                  <option value={{x}}>{{x}}</option>
+                {% endfor %}
+              </select>
+              <!--Submit-->
               <br><button type="submit" class="btn">Add</button>
               <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
             </form>
@@ -59,7 +69,7 @@
               {% else %}
                 <li><input type="checkbox" name="checkboxN" value={{x}} /><label for="text1">{{x.time}}</label></li>
               {% endif %} 
-              {% endfor %}
+            {% endfor %}
           </ul>
           <ul>
             <br><br><br><br><br><br><br><br>
