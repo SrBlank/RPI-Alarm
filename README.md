@@ -40,38 +40,38 @@ youtube-dl --extract-audio --audio-format mp3 <youtube link>
 ```
 Finally open `alarm.py` and change the const variable `ALARM_TO_PLAY` to the alarm that was just downloaded. It might be easier to change the name of the file downloaded as youtube-dl creates long file names.
 
-
-### Changing Alarm Playtime
-
-Navigate to `alarm.py` in `/src/` and change the const variable `ALARM_PLAYTIME` to an integer. This will play the alarm for a number of seconds.
-
 ## Future Features
 
 This project is still a WIP. I have implemented this code on my RPI4 and I am currently testing it. The core functionality works and is waking me up on a daily basis. Below is a list of feautres I plan to add.
 
 - Beautify Website
-    - ~~Signify submission~~
-        - ~~flask flashes?~~
     - Show current time
         - java script
     - Show next alarm to be played
         - java script
-    - Maybe show what mp3 file will be played
+    - Make check boxes bigger or have them as JS switches
+    - Add an edit alarm button
+    - ~~Signify submission~~
+        - ~~flask flashes?~~
+    - ~~Maybe show what mp3 file will be played~~
 - Code
-    - ~~Have listfile.data not be overwritten every time~~
-    - Implement alarm class for customizability
-        - Different alarm sound for different alarms?
-        - Set up days for alarms?
     - Add a nap button which will create an alarm that will play in X min
-    - Create a config file
-        - Alarm playblack time
-        - Directory?
-        - Add alarms?
+    - Add button intterupt 
+    - Add days of the week for alarms
+    - ~~Have listfile.data not be overwritten every time~~
+    - ~~Implement alarm class for customizability~~
+        - ~~Different alarm sound for different alarms?~~
+        - ~~Set up days for alarms?~~
+    - ~~Create a config file~~ 
+        - ~~Alarm playblack time~~
+        - ~~Directory?~~
+        - ~~Add alarms?~~
     - ~~Clean up alarm file~~
 - ~~Turn off Alarm~~
     - ~~Timer~~
     - ~~Button~~
     - Sensor
+        - Ultrasonic Sensor HC-SR04
     
 
 
