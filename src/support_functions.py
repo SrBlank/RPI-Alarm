@@ -29,20 +29,44 @@ def sort_arr_time(D1_array_to_sort):
 
             difference = conver_current - conver_min
             if (difference > 0):
-                index_b_time = [difference, hours_current + ":" + minutes_current]
-                sorted_array.append(index_b_time)
+                i.time_diff = difference
+                #index_b_time = [difference, i]#hours_current + ":" + minutes_current]
+                sorted_array.append(i)
             elif (difference <= 0):
-                index_b_time = [MINUTES_IN_DAY-(difference*-1), hours_current + ":" + minutes_current]
-                sorted_array.append(index_b_time)
-        sorted_array.sort(key=lambda x: x[0])
+                i.time_diff = MINUTES_IN_DAY-(difference*-1)
+                #index_b_time = [MINUTES_IN_DAY-(difference*-1), i]#hours_current + ":" + minutes_current]
+                sorted_array.append(i)
+        sorted_array.sort(key=lambda x: x.time_diff)
         return sorted_array 
     else:
         pass
 
+
+"""
+DEPRECATED
+"""
+# sort_list
+# takes in a 1d array of times ["01:15", "23:45", "00:00"]
+# Returns sorted 1d array of times from 00:00 to 23:59 ["00:00", "01:15", "23:45"]
+"""
+def sort_list(sort_array):
+    #print(sort_array)
+    return sort_array.sort(key=lambda x: x.time)
+    #print(sort_array)
+
+    #return sort_array.sort(key=lambda x: x.time)
+    #return sorted(sort_array)
+"""
+
+
+"""
+DEPRECATED
+"""
 # sort_arr_time_2d
 # takes a 2d array of [time difference, "time"] as input
 # converts the 2d array into a 1d array of times then calls sort_arr_time
 # Returns a sortted 2d array of [time difference, "time"] with respect to the current time
+"""
 def sort_arr_time_2d(D2_array_to_sort=[]):
     if len(D2_array_to_sort) != 0:
         temp_array = []
@@ -54,15 +78,5 @@ def sort_arr_time_2d(D2_array_to_sort=[]):
         return sorted_array 
     else:
         pass
+"""
 
-# sort_list
-# takes in a 1d array of times ["01:15", "23:45", "00:00"]
-# Returns sorted 1d array of times from 00:00 to 23:59 ["00:00", "01:15", "23:45"]
-def sort_list(sort_array):
-    #print(sort_array)
-    return sort_array.sort(key=lambda x: x.time)
-    #print(sort_array)
-
-    #return sort_array.sort(key=lambda x: x.time)
-    #return sorted(sort_array)
- 

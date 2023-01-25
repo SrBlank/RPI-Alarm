@@ -7,7 +7,7 @@ import signal
 from datetime import datetime
 from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 
-from support_functions import sort_arr_time_2d
+from support_functions import sort_arr_time
 from alarm_class import Alarm
 
 if os.path.exists("std.log"):
@@ -41,6 +41,7 @@ STAY_IN_LOOP = True
 # GPIO Initialization
 def alarm_stop_callback(channel):
     global STAY_IN_LOOP
+    logger.info("Button Pressed")
     STAY_IN_LOOP = False
 
 if ENABLE_BUTTON:
@@ -66,7 +67,8 @@ else:
 logger.debug("listfile.data is ready, starting loop")
 
 def playAlarm():
-    proc = Popen(["mpg123", ALARM_TO_PLAY])
+    #proc = Popen(["mpg123", ALARM_TO_PLAY])
+    proc = Popen(["gedit"])
     try:
         outs, errs = proc.communicate(timeout=ALARM_PLAYTIME)
     except TimeoutExpired:
@@ -99,7 +101,7 @@ while True:
             if counter == len(diff_array):
                 d = datetime.now()
                 curr_time = d.strftime("%H:%M")
-                if diff_array[0][1] == curr_time:
+                if diff_array[0].time == curr_time:
                     logger.debug("sleeping")
                     time.sleep(60)
                 counter = 0
@@ -108,14 +110,14 @@ while True:
 
         # iterate by counter and check if the time matches then play sound if so for ALARM_PLAYTIME seconds
         if counter < len(diff_array):
-            alarm_time = diff_array[counter][1]
+            alarm_time = diff_array[counter].time #[1]
             d = datetime.now()
             curr_time = d.strftime("%H:%M")
 
             logger.info("Time Being Checked: " + alarm_time)
             if alarm_time == curr_time:
                 counter = counter + 1
-                diff_array = sort_arr_time_2d(diff_array)
+                diff_array = sort_arr_time(diff_array)
 
                 if not ENABLE_BUTTON:
                     logger.critical("** ALARM DONE NO BUTTON **")

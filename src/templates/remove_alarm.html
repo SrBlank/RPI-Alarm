@@ -18,7 +18,7 @@
         <form method="POST" action="/remove_alarms">
           <ul class="checkbox_grid">
             {% for x in alarms_list %}
-                <li><input type="checkbox" name="checkbox" value={{x}} /><label for="text1">{{x}}</label></li>
+                <li><input type="checkbox" name="checkbox" value={{x}} /><label for="text1">{{x.time}}</label></li>
             {% endfor %}
           </ul>
           <br><br><br>
