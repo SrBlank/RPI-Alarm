@@ -49,8 +49,6 @@ def hello_world():
     rn = d.strftime("%H:%M:%S")
 
     alarms_sel_sorted_2d = sort_arr_time(alarms_sel) 
-    #print(alarms_sel)
-    #print(alarms_sel_sorted_2d)
     with open('listfile.data', 'wb') as alarms:
         pickle.dump([alarms_sel_sorted_2d, rn], alarms) 
 
@@ -92,9 +90,6 @@ def remove_alarms():
     for i in alarms_sel:
         if i.time in form_checked:
             alarms_sel.remove(i)
-    
-   #for i in form_checked:
-   #     list_of_alarms.remove(i)   
         
     return redirect(url_for("hello_world"))
 
@@ -113,11 +108,7 @@ def update_alarms():
     for k in form_checked:
         alarms_sel.append(Alarm(k))
 
-    #sort_list(alarms_sel)
-    #print(alarms_sel)
-    #sort_arr_time(alarms_sel)
     flash('Alarms Updated!')
-   
     return redirect(url_for("hello_world"))
 
 
@@ -139,10 +130,9 @@ def new_alarm():
         flash("Playback Must Be An Integer!")
         return redirect(url_for("hello_world"))
     if len(new_playback) == 0:
-        new_playback = 3 # CHANGE TO ALARM CONSTANT 
-    
-    list_of_alarms.append(Alarm(new_time, new_playback))
-    #sort_list(list_of_alarms)
+        list_of_alarms.append(Alarm(new_time)) 
+    else:
+        list_of_alarms.append(Alarm(new_time, new_playback))
 
     flash("Alarm " + new_time + " added!")
     return redirect(url_for("hello_world"))
