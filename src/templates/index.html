@@ -53,6 +53,15 @@
                   <option value={{x}}>{{x}}</option>
                 {% endfor %}
               </select>
+              <!--Enable Button-->
+              <br><label for="enable_button">
+                <strong>Button</strong>
+              </label>
+              <br>
+              <select name="enable_button" id="enable_button">
+                <option value="Disable">Disable</option>
+                <option value="Enable">Enable</option>
+              </select>
               <!--Submit-->
               <br><button type="submit" class="btn">Add</button>
               <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
