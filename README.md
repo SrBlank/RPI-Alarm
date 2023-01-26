@@ -58,6 +58,7 @@ This project is still a WIP. I have implemented this code on my RPI4 and I am cu
     - Add a nap button which will create an alarm that will play in X min
     - Add button intterupt 
     - Add days of the week for alarms
+    - Add keyboard input as button 
     - ~~Have listfile.data not be overwritten every time~~
     - ~~Implement alarm class for customizability~~
         - ~~Different alarm sound for different alarms?~~
