@@ -128,15 +128,6 @@ while True:
                     logger.critical("** ALARM DONE NO BUTTON **")
                     playAlarm(alarm_instance)
 
-                """"
-                if not ENABLE_BUTTON:
-                    logger.critical("** ALARM DONE NO BUTTON **")
-                    playAlarm(alarm_instance)
-                else:
-                    logger.critical("** ALARM DONE WITH BUTTON **")
-                    while STAY_IN_LOOP:  # Repeat audio until button has been pressed
-                        playAlarm(alarm_instance)        
-                """      
             else:
                 pass
                 logger.debug("It Is Not Time")
