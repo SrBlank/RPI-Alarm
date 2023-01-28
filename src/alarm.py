@@ -5,7 +5,7 @@ import logging
 import signal
 
 from datetime import datetime
-from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
+from subprocess import Popen, PIPE, STDOUT, TimeoutExpired, check_output, CalledProcessError
 
 from support_functions import sort_arr_time
 from alarm_class import Alarm
@@ -40,9 +40,17 @@ STAY_IN_LOOP = True
 
 # GPIO Initialization
 def alarm_stop_callback(channel):
-    global STAY_IN_LOOP
     logger.info("Button Pressed")
+
+    global STAY_IN_LOOP
     STAY_IN_LOOP = False
+
+    try: 
+        process_id = int(check_output(["pidof","-s","mpg123"]))
+        os.system("kill -9 " + str(process_id))
+        logger.info("Process SKilled Sucessfully")
+    except CalledProcessError:
+        print("Process Does Not Exist")
 
 if ENABLE_BUTTON:
     import RPi.GPIO as GPIO
