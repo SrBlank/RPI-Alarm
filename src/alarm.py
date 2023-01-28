@@ -32,7 +32,7 @@ loop_counter = 0
 MINUTES_IN_DAY = 1440
 ALARM_PLAYTIME = 5
 ALARM_TO_PLAY = "./alarm_sounds/generic_alarm.mp3"
-ENABLE_BUTTON = False
+ENABLE_BUTTON = True
 GPIO_INPUT_PIN = 10
 
 global STAY_IN_LOOP
@@ -120,13 +120,23 @@ while True:
                 counter = counter + 1
                 diff_array = sort_arr_time(diff_array)
 
+                if alarm_instance.button and ENABLE_BUTTON:
+                    logger.critical("** ALARM DONE WITH BUTTON **")
+                    while STAY_IN_LOOP:  # Repeat audio until button has been pressed
+                        playAlarm(alarm_instance) 
+                else:
+                    logger.critical("** ALARM DONE NO BUTTON **")
+                    playAlarm(alarm_instance)
+
+                """"
                 if not ENABLE_BUTTON:
                     logger.critical("** ALARM DONE NO BUTTON **")
                     playAlarm(alarm_instance)
                 else:
                     logger.critical("** ALARM DONE WITH BUTTON **")
                     while STAY_IN_LOOP:  # Repeat audio until button has been pressed
-                        playAlarm(alarm_instance)              
+                        playAlarm(alarm_instance)        
+                """      
             else:
                 pass
                 logger.debug("It Is Not Time")
