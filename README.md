@@ -56,7 +56,7 @@ This project is still a WIP. I have implemented this code on my RPI4 and I am cu
     - ~~Maybe show what mp3 file will be played~~
 - Code
     - Add a nap button which will create an alarm that will play in X min
-    - Add button intterupt 
+    - ~~Add button intterupt~~
     - Add days of the week for alarms
     - Add keyboard input as button 
     - ~~Have listfile.data not be overwritten every time~~
