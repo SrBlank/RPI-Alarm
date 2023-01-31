@@ -49,7 +49,6 @@
               </label>
               <br>
               <select name="alarm_sound" id="AlarmSound">
-                <!--Cant do defaults_dict["AlarmSound"]-->
                 <option value="placeholder">{{ defaults_dict["AlarmSound"] }}</option>
                 {% for x in alarm_sounds %}
                   {% if x != defaults_dict["AlarmSound"] %}}
@@ -102,7 +101,7 @@
         
         <form method="POST" action="/timer_process">
           <br>
-          <input type="submit" value = "Add Nap Alarm"/>
+          <input type="submit" value = "Add {{defaults_dict.Nap}}min Alarm"/>
         </form>
 
         <form method="POST" action="/settings">

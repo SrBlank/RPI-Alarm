@@ -115,7 +115,12 @@ def timer_process():
             flash("Alarm Already Exists!")
             return redirect(url_for("hello_world"))
 
-    add_alarm = Alarm(new_time)
+    add_alarm = Alarm(
+        new_time,
+        playtime=defaults_dict["PlayTime"],
+        alarm_sound=defaults_dict["AlarmSound"],
+        enable_button=defaults_dict["Button"]
+        )
 
     list_of_alarms.append(add_alarm)
     alarms_sel.append(add_alarm)
