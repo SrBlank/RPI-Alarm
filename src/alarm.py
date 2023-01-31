@@ -39,7 +39,10 @@ loop_counter = 0
 MINUTES_IN_DAY = 1440
 ALARM_PLAYTIME = 5
 ALARM_TO_PLAY = "./alarm_sounds/generic_alarm.mp3"
-ENABLE_BUTTON = True
+if os.name == 'posix':
+    ENABLE_BUTTON = True
+else:
+    ENABLE_BUTTON = False
 GPIO_INPUT_PIN = 10
 
 global STAY_IN_LOOP
@@ -59,8 +62,7 @@ def alarm_stop_callback(channel):
     except CalledProcessError:
         print("Process Does Not Exist")
 
-
-if ENABLE_BUTTON:
+try:
     import RPi.GPIO as GPIO
 
     GPIO.setwarnings(False)
@@ -68,7 +70,7 @@ if ENABLE_BUTTON:
     GPIO.setup(GPIO_INPUT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.add_event_detect(GPIO_INPUT_PIN, GPIO.RISING, callback=alarm_stop_callback)
     logger.info("Intiliazed Variables and GPIO")
-else:
+except (RuntimeError, ModuleNotFoundError):
     logger.info("Intilizaed Variables, button is disabled")
 
 logger.info("Waiting for listfile.data to be ready")
