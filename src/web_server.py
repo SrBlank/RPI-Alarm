@@ -76,9 +76,25 @@ def removeablealarms():
         alarms_list = list_of_alarms
         )
 
+#
+# Function renders settings.html
+#
+@app.route("/settings", methods=["POST"])
+def settings():
+    return render_template("settings.html")
+
 """
 FORM PROCESSES
 """
+#
+# Function will update settings
+#
+@app.route("/update_settings", methods=["POST"])
+def update_settings():
+    form_data = request.form
+    
+    return redirect(url_for("hello_world"))
+
 #
 # Function will remove alarms from list
 #
@@ -123,7 +139,6 @@ def update_alarms():
 #
 # New function for getting new alarm form data
 #
-
 @app.route("/process_time", methods=['POST'])
 def new_alarm():
     form_data = request.form
