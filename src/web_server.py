@@ -97,9 +97,10 @@ def timer_process():
     new_time = curr_time + time_change
     new_time = new_time.strftime("%H:%M")
 
-    if new_time in list_of_alarms: # FIX
-        flash("Alarm Already Exists!")
-        return redirect(url_for("hello_world"))
+    for item in list_of_alarms:
+        if new_time in item:
+            flash("Alarm Already Exists!")
+            return redirect(url_for("hello_world"))
 
     add_alarm = Alarm(new_time)
 
@@ -175,9 +176,10 @@ def new_alarm():
     else:
         enable_button_bool = False
 
-    if new_time in list_of_alarms:
-        flash("Alarm Already Exists!")
-        return redirect(url_for("hello_world"))
+    for item in list_of_alarms:
+        if new_time in item:
+            flash("Alarm Already Exists!")
+            return redirect(url_for("hello_world"))
     if isinstance(new_playback, int):
         flash("Playback Must Be An Integer!")
         return redirect(url_for("hello_world"))
