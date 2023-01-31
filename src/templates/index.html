@@ -42,15 +42,19 @@
               <br><label for="playback_time">
                 <strong>Playback Time</strong>
               </label>
-              <br><input type="number" min="1" id="playback_time" placeholder="Leave Blank for Max" name="playback_time">
+              <br><input type="number"  min="1" id="playback_time"  name="playback_time" value={{defaults_dict.PlayTime}}>
               <!--Alarm Sound-->
               <br><label for="alarm_sound">
                 <strong>Alarm Sound</strong>
               </label>
               <br>
-              <select name="alarm_sound" id="alarm_sound">
+              <select name="alarm_sound" id="AlarmSound">
+                <!--Cant do defaults_dict["AlarmSound"]-->
+                <option value="placeholder">{{ defaults_dict["AlarmSound"] }}</option>
                 {% for x in alarm_sounds %}
-                  <option value={{x}}>{{x}}</option>
+                  {% if x != defaults_dict["AlarmSound"] %}}
+                    <option value={{x}}>{{x}}</option>
+                  {% endif %}
                 {% endfor %}
               </select>
               <!--Enable Button-->
@@ -59,8 +63,13 @@
               </label>
               <br>
               <select name="enable_button" id="enable_button">
-                <option value="Disable">Disable</option>
-                <option value="Enable">Enable</option>
+                {% if defaults_dict["Button"] == "Enable" %}
+                  <option value="Enable">Enable</option>
+                  <option value="Disable">Disable</option>
+                {% else %}
+                  <option value="Disable">Disable</option>  
+                  <option value="Enable">Enable</option>
+                {% endif %}
               </select>
               <!--Submit-->
               <br><button type="submit" class="btn">Add</button>

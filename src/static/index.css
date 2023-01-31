@@ -85,6 +85,21 @@ FOOTER
 }
 
 /*
+Settings Form
+*/
+.settings_form_container { 
+  height: 100vh;
+  width: 97vw;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.settings_form_content {
+  position: relative;
+  text-align:center;
+}
+
+/*
 FORM STUFF
 */
 * {
@@ -118,11 +133,11 @@ FORM STUFF
     border: none; /*3px solid #999999;*/
     z-index: 9;
   }
-.formContainer {
-   max-width: 300px;
-    padding: 20px;
-    background-color: #fff;
-    color: black;
+  .formContainer {
+    max-width: 300px;
+      padding: 20px;
+      background-color: #fff;
+      color: black;
   }
 
   .formContainer input[type=text],
@@ -156,3 +171,4 @@ FORM STUFF
   .openButton:hover {
     opacity: 1;
   }
+

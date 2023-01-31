@@ -22,6 +22,12 @@ NAP_DEFAULT = 40  # To be changed into settings
 list_of_alarms = []
 alarms_sel = []
 alarms_sel_sorted_2d = []
+defaults_dict = {
+    "PlayTime" : "3",
+    "AlarmSound" : "generic_alarm.mp3",
+    "Button" : "Enable",
+    "Nap" : "40"
+}
 
 alarm_sounds = os.listdir("./alarm_sounds")
 
@@ -67,6 +73,7 @@ def hello_world():
         alarms_list=list_of_alarms,
         alarms_selcted=alarms_sel_times,
         alarm_sounds=alarm_sounds,
+        defaults_dict=defaults_dict
     )
 
 
@@ -82,8 +89,12 @@ def removeablealarms():
 # Function renders settings.html
 #
 @app.route("/settings", methods=["POST"])
-def settings():
-    return render_template("settings.html")
+def settings():      
+    return render_template(
+        "settings.html",
+        alarm_sounds=alarm_sounds,
+        defaults_dict=defaults_dict
+        )
 
 
 """
@@ -95,7 +106,7 @@ FORM PROCESSES
 @app.route("/timer_process", methods=["POST"])
 def timer_process():
     curr_time = datetime.now()
-    time_change = timedelta(minutes=NAP_DEFAULT)
+    time_change = timedelta(minutes=int(defaults_dict["Nap"]))
     new_time = curr_time + time_change
     new_time = new_time.strftime("%H:%M")
 
@@ -118,6 +129,11 @@ def timer_process():
 @app.route("/update_settings", methods=["POST"])
 def update_settings():
     form_data = request.form
+
+    defaults_dict["AlarmSound"] = form_data["alarm_sound"]
+    defaults_dict["Button"] = form_data["enable_button"]
+    defaults_dict["PlayTime"] = form_data["playback_time"]
+    defaults_dict["Nap"] = form_data["nap_timer"]
 
     return redirect(url_for("hello_world"))
 
