@@ -2,7 +2,7 @@ import os
 import sys
 import pickle
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from subprocess import Popen, PIPE, STDOUT
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, render_template, redirect, url_for, request, flash
@@ -17,6 +17,7 @@ app.secret_key = os.getenv('app_secret')
 MINUTES_IN_DAY = 1440
 ADD_2_ALARMS = False
 DEL_LISTFILE = True
+NAP_DEFAULT = 40 # To be changed into settings
 
 list_of_alarms = [] 
 alarms_sel = [] 
@@ -87,12 +88,33 @@ def settings():
 FORM PROCESSES
 """
 #
+# Function will process nap button 
+#
+@app.route("/timer_process", methods=["POST"])
+def timer_process():
+    curr_time = datetime.now()
+    time_change = timedelta(minutes=NAP_DEFAULT)
+    new_time = curr_time + time_change
+    new_time = new_time.strftime("%H:%M")
+
+    if new_time in list_of_alarms: # FIX
+        flash("Alarm Already Exists!")
+        return redirect(url_for("hello_world"))
+
+    add_alarm = Alarm(new_time)
+
+    list_of_alarms.append(add_alarm)
+    alarms_sel.append(add_alarm)
+
+    return redirect(url_for("hello_world"))
+
+#
 # Function will update settings
 #
 @app.route("/update_settings", methods=["POST"])
 def update_settings():
     form_data = request.form
-    
+
     return redirect(url_for("hello_world"))
 
 #
