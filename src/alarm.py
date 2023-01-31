@@ -5,7 +5,14 @@ import logging
 import signal
 
 from datetime import datetime
-from subprocess import Popen, PIPE, STDOUT, TimeoutExpired, check_output, CalledProcessError
+from subprocess import (
+    Popen,
+    PIPE,
+    STDOUT,
+    TimeoutExpired,
+    check_output,
+    CalledProcessError,
+)
 
 from support_functions import sort_arr_time
 from alarm_class import Alarm
@@ -45,15 +52,17 @@ def alarm_stop_callback(channel):
     global STAY_IN_LOOP
     STAY_IN_LOOP = False
 
-    try: 
-        process_id = int(check_output(["pidof","-s","mpg123"]))
+    try:
+        process_id = int(check_output(["pidof", "-s", "mpg123"]))
         os.system("kill -9 " + str(process_id))
         logger.info("Process SKilled Sucessfully")
     except CalledProcessError:
         print("Process Does Not Exist")
 
+
 if ENABLE_BUTTON:
     import RPi.GPIO as GPIO
+
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(GPIO_INPUT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -74,6 +83,7 @@ else:
 
 logger.info("listfile.data is ready, starting loop")
 
+
 def playAlarm(alarm_instance):
     proc = Popen(["mpg123", alarm_instance.alarm_sound])
     try:
@@ -82,6 +92,7 @@ def playAlarm(alarm_instance):
         proc.kill()
         outs, errs = proc.communicate()
     logger.critical("** ALARM **")
+
 
 """ MAIN LOOP """
 while True:
@@ -117,9 +128,9 @@ while True:
 
         # iterate by counter and check if the time matches then play sound if so for ALARM_PLAYTIME seconds
         if counter < len(diff_array):
-            STAY_IN_LOOP = True  # Reset loop variable for next alarm 
+            STAY_IN_LOOP = True  # Reset loop variable for next alarm
             alarm_instance = diff_array[counter]
-            alarm_time = diff_array[counter].time #[1]
+            alarm_time = diff_array[counter].time  # [1]
             d = datetime.now()
             curr_time = d.strftime("%H:%M")
 
@@ -131,7 +142,7 @@ while True:
                 if alarm_instance.button and ENABLE_BUTTON:
                     logger.critical("** ALARM DONE WITH BUTTON **")
                     while STAY_IN_LOOP:  # Repeat audio until button has been pressed
-                        playAlarm(alarm_instance) 
+                        playAlarm(alarm_instance)
                 else:
                     logger.critical("** ALARM DONE NO BUTTON **")
                     playAlarm(alarm_instance)
