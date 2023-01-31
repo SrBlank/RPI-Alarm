@@ -172,3 +172,12 @@ FORM STUFF
     opacity: 1;
   }
 
+
+/*
+Clock Div
+*/
+.clock_container{
+  position: fixed;
+  top: 20;
+  right: 20;
+}

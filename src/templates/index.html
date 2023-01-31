@@ -2,15 +2,20 @@
 <html>
   <head>
     <link rel="stylesheet" href="../static/index.css">
+    <script type="text/javascript" src="../static/clock.js"></script>
   </head>
-  <body>
+  <body onload="startTime();">
 
+    <div class="clock_container">
+      <div id="clock"></div>
+    </div>
+    
     <div class="header_container">
       <div class="header_content">
         <h1>Raspberry PI Alarm</h1>
       </div>
     </div>
-
+    
     <div class="flash_container">
       <div class="flash_content">
         {% with messages = get_flashed_messages() %}
