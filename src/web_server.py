@@ -1,6 +1,7 @@
 import os
 import sys
 import pickle
+import json
 
 from datetime import datetime, timedelta
 from subprocess import Popen, PIPE, STDOUT
@@ -52,8 +53,6 @@ if ADD_2_ALARMS:
 """
 HTML PAGE RENDERING
 """
-
-
 @app.route("/")
 def hello_world():
     d = datetime.now()
@@ -76,14 +75,12 @@ def hello_world():
         defaults_dict=defaults_dict
     )
 
-
 #
 # Function renders remove_alarm.html
 #
 @app.route("/removeablealarms", methods=["POST"])
 def removeablealarms():
     return render_template("remove_alarm.html", alarms_list=list_of_alarms)
-
 
 #
 # Function renders settings.html
@@ -100,22 +97,6 @@ def settings():
 """
 FORM PROCESSES
 """
-#
-# Function will get data from checkbox.js
-#
-@app.route("/store_data", methods=["GET", "POST"])
-def update_db():
-    r = request.get_json()
-    print(r)
-    return r
-    """
-    if request.method == "POST":
-        jsonData = request.get_json()
-        print(jsonData)
-        return "I am the response"
-    #source = request.args.get('source')
-    return redirect(url_for("hello_world"))
-    """
 #
 # Function will process nap button
 #
@@ -143,7 +124,6 @@ def timer_process():
 
     return redirect(url_for("hello_world"))
 
-
 #
 # Function will update settings
 #
@@ -157,7 +137,6 @@ def update_settings():
     defaults_dict["Nap"] = form_data["nap_timer"]
 
     return redirect(url_for("hello_world"))
-
 
 #
 # Function will remove alarms from list
@@ -175,7 +154,6 @@ def remove_alarms():
             alarms_sel.remove(i)
 
     return redirect(url_for("hello_world"))
-
 
 #
 # function will check/uncheck alarm boxes
@@ -199,7 +177,6 @@ def update_alarms():
 
     flash("Alarms Updated!")
     return redirect(url_for("hello_world"))
-
 
 #
 # New function for getting new alarm form data
@@ -237,6 +214,39 @@ def new_alarm():
     flash("Alarm " + new_time + " added!")
     return redirect(url_for("hello_world"))
 
+
+"""
+REQUEST HANDLERS
+"""
+#
+# Function will handle request from checkbox.js
+#
+@app.route("/store_data", methods=["GET", "POST"])
+def update_db():
+    request_dict = request.get_json()
+    alarms_sel = request_dict["checked"].copy()
+    
+    return request_dict
+    """
+    d = datetime.now()
+    rn = d.strftime("%H:%M:%S")
+
+    alarms_sel_sorted_2d = sort_arr_time(alarms_sel)
+    with open("listfile.data", "wb") as alarms:
+        pickle.dump([alarms_sel_sorted_2d, rn], alarms)
+
+    sort_arr_time(list_of_alarms)
+    alarms_sel_times = []
+    for i in alarms_sel:
+        alarms_sel_times.append(i.time)
+
+    if request.method == "POST":
+        jsonData = request.get_json()
+        print(jsonData)
+        return "I am the response"
+    #source = request.args.get('source')
+    return redirect(url_for("hello_world"))
+    """
 
 if __name__ == "__main__":
     if DEL_LISTFILE:
