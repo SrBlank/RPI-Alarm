@@ -101,6 +101,22 @@ def settings():
 FORM PROCESSES
 """
 #
+# Function will get data from checkbox.js
+#
+@app.route("/store_data", methods=["GET", "POST"])
+def update_db():
+    r = request.get_json()
+    print(r)
+    return r
+    """
+    if request.method == "POST":
+        jsonData = request.get_json()
+        print(jsonData)
+        return "I am the response"
+    #source = request.args.get('source')
+    return redirect(url_for("hello_world"))
+    """
+#
 # Function will process nap button
 #
 @app.route("/timer_process", methods=["POST"])
