@@ -3,6 +3,7 @@
   <head>
     <link rel="stylesheet" href="../static/index.css">
     <script type="text/javascript" src="../static/clock.js"></script>
+    <script type="text/javascript" src="../static/checkbox.js"></script>
   </head>
   <body onload="startTime();">
 
@@ -15,7 +16,7 @@
         <h1>Raspberry PI Alarm</h1>
       </div>
     </div>
-    
+
     <div class="flash_container">
       <div class="flash_content">
         {% with messages = get_flashed_messages() %}
@@ -87,9 +88,27 @@
           <ul class="checkbox_grid">
             {% for x in alarms_list %}
               {% if x.time in alarms_selcted  %}
-                <li><input type="checkbox" name="checkbox" value={{x}} checked /><label for="text1">{{x.time}}</label></li>
+                <div class="switch_container">
+                  <p name="time_in_switch_box">{{x.time}}</p>
+                  <div class="switch_box">
+                    <label class="switch">
+                      <input type="checkbox" name="slider_box" onclick="myFunction()" value="checkbox2" >
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+                <!--<li><input type="checkbox" name="checkbox" value={{x}} checked /><label for="text1">{{x.time}}</label></li>-->
               {% else %}
-                <li><input type="checkbox" name="checkboxN" value={{x}} /><label for="text1">{{x.time}}</label></li>
+              <div class="switch_container">
+                <p name="time_in_switch_box">{{x.time}}</p>
+                <div class="switch_box">
+                  <label class="switch">
+                    <input type="checkbox" name="slider_box" onclick="myFunction()" value="checkbox2" >
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+                <!--<li><input type="checkbox" name="checkboxN" value={{x}} /><label for="text1">{{x.time}}</label></li>-->
               {% endif %} 
             {% endfor %}
           </ul>
