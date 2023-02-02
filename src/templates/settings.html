@@ -25,7 +25,7 @@
             </label>
             <br>
             <select name="alarm_sound" id="AlarmSound">
-              <option value="placeholder">{{ defaults_dict["AlarmSound"] }}</option>
+              <option value={{defaults_dict.AlarmSound}}>{{ defaults_dict["AlarmSound"] }}</option>
               {% for x in alarm_sounds %}
                 {% if x != defaults_dict["AlarmSound"] %}}
                   <option value={{x}}>{{x}}</option>
