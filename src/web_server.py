@@ -55,14 +55,6 @@ HTML PAGE RENDERING
 """
 @app.route("/")
 def hello_world():
-    """
-    d = datetime.now()
-    rn = d.strftime("%H:%M:%S")
-
-    alarms_sel_sorted_2d = sort_arr_time(alarms_sel)
-    with open("listfile.data", "wb") as alarms:
-        pickle.dump([alarms_sel_sorted_2d, rn], alarms)
-    """
     sort_arr_time(list_of_alarms)
     alarms_sel_times = []
     for i in alarms_sel:
@@ -157,31 +149,6 @@ def remove_alarms():
     return redirect(url_for("hello_world"))
 
 #
-# function will check/uncheck alarm boxes
-#
-"""
-@app.route("/update_alarms", methods=["POST"])
-def update_alarms():
-    form_data = request.form
-    form_checked = request.form.getlist("checkbox")
-    form_checkedN = request.form.getlist("checkboxN")
-    alarms_sel.clear()
-
-    for checked in form_checkedN:
-        for alarm in list_of_alarms:
-            if checked in alarm:
-                alarms_sel.append(alarm)
-
-    for unchecked in form_checked:
-        for alarm in list_of_alarms:
-            if unchecked in alarm:
-                alarms_sel.append(alarm)
-
-    flash("Alarms Updated!")
-    return redirect(url_for("hello_world"))
-"""
-
-#
 # New function for getting new alarm form data
 #
 @app.route("/process_time", methods=["POST"])
@@ -242,28 +209,7 @@ def update_db():
     with open("listfile.data", "wb") as alarms:
         pickle.dump([alarms_sel_sorted_2d, rn], alarms)
     
-    print(alarms_sel)
     return request_dict
-    """
-    d = datetime.now()
-    rn = d.strftime("%H:%M:%S")
-
-    alarms_sel_sorted_2d = sort_arr_time(alarms_sel)
-    with open("listfile.data", "wb") as alarms:
-        pickle.dump([alarms_sel_sorted_2d, rn], alarms)
-
-    sort_arr_time(list_of_alarms)
-    alarms_sel_times = []
-    for i in alarms_sel:
-        alarms_sel_times.append(i.time)
-
-    if request.method == "POST":
-        jsonData = request.get_json()
-        print(jsonData)
-        return "I am the response"
-    #source = request.args.get('source')
-    return redirect(url_for("hello_world"))
-    """
 
 if __name__ == "__main__":
     if DEL_LISTFILE:

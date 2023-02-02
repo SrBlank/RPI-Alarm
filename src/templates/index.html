@@ -87,6 +87,7 @@
           <br>
           <ul class="checkbox_grid">
             {% for x in alarms_list %}
+              <!--Container for Switches-->
                 <div class="switch_container">
                   <p name="time_in_switch_box">{{x.time}}</p>
                   <div class="switch_box">
@@ -105,7 +106,6 @@
           <ul>
             <br><br><br><br><br><br><br><br>
           </ul> 
-          <input type="submit" value = "Update Alarms"/>
         </form>
         
         <form method="POST" action="/removeablealarms">
