@@ -78,19 +78,15 @@
                   {% endif %}
                 {% endfor %}
               </select>
-              <!--Enable Button-->
-              <br><label for="enable_button">
-                <strong>Button</strong>
+              <!--Input Type-->
+              <br><label for="which_input">
+                <strong>Input Type</strong>
               </label>
               <br>
-              <select name="enable_button" id="enable_button">
-                {% if defaults_dict["Button"] == "Enable" %}
-                  <option value="Enable">Enable</option>
-                  <option value="Disable">Disable</option>
-                {% else %}
-                  <option value="Disable">Disable</option>  
-                  <option value="Enable">Enable</option>
-                {% endif %}
+              <select name="which_input" id="which_input">
+                <option value="Timer">Timer</option>
+                <option value="Button">Button</option>
+                <option value="Sensor">Sensor</option>
               </select>
               <!--Submit-->
               <br><button type="submit" class="btn">Add</button>

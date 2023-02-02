@@ -3,7 +3,7 @@ import ffmpeg
 
 class Alarm(object):
     def __init__(
-        self, time, playtime=0, alarm_sound="generic_alarm.mp3", enable_button=True
+        self, time, playtime=0, alarm_sound="generic_alarm.mp3", input="Button"
     ):
         self.time = time
         self.time_diff = None
@@ -13,7 +13,7 @@ class Alarm(object):
             playtime = int(float(ffmpeg.probe(self.alarm_sound)["format"]["duration"]))
         self.playtime = playtime
 
-        self.button = enable_button
+        self.input = input
 
     def __repr__(self):
         return (
@@ -23,7 +23,7 @@ class Alarm(object):
             + " "
             + str(self.alarm_sound)
             + " "
-            + str(self.button)
+            + str(self.input)
         )
 
     def __contains__(self, time):

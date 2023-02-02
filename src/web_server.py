@@ -26,7 +26,7 @@ alarms_sel_sorted_2d = []
 defaults_dict = {
     "PlayTime" : "3",
     "AlarmSound" : "generic_alarm.mp3",
-    "Button" : "Enable",
+    "Input" : "Button",
     "Nap" : "40"
 }
 
@@ -109,7 +109,7 @@ def timer_process():
         new_time,
         playtime=defaults_dict["PlayTime"],
         alarm_sound=defaults_dict["AlarmSound"],
-        enable_button=defaults_dict["Button"]
+        input=defaults_dict["Input"]
         )
 
     list_of_alarms.append(add_alarm)
@@ -125,7 +125,7 @@ def update_settings():
     form_data = request.form
 
     defaults_dict["AlarmSound"] = form_data["alarm_sound"]
-    defaults_dict["Button"] = form_data["enable_button"]
+    defaults_dict["Input"] = form_data["enable_button"]
     defaults_dict["PlayTime"] = form_data["playback_time"]
     defaults_dict["Nap"] = form_data["nap_timer"]
 
@@ -159,11 +159,7 @@ def new_alarm():
     new_time = form_data["time_prompt"]
     new_playback = form_data["playback_time"]
     alarm_sounds_form = form_data["alarm_sound"]
-    enable_button_form = form_data["enable_button"]
-    if enable_button_form == "Enable":
-        enable_button_bool = True
-    else:
-        enable_button_bool = False
+    sensor_type_form = form_data["which_input"]
 
     for item in list_of_alarms:
         if new_time in item:
@@ -177,7 +173,7 @@ def new_alarm():
         new_time,
         playtime=new_playback,
         alarm_sound=alarm_sounds_form,
-        enable_button=enable_button_bool,
+        input=sensor_type_form,
     )
     list_of_alarms.append(add_alarm)
 

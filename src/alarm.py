@@ -141,7 +141,7 @@ while True:
                 counter = counter + 1
                 diff_array = sort_arr_time(diff_array)
 
-                if alarm_instance.button and ENABLE_BUTTON:
+                if (alarm_instance.input == "Button") and ENABLE_BUTTON:
                     logger.critical("** ALARM DONE WITH BUTTON **")
                     while STAY_IN_LOOP:  # Repeat audio until button has been pressed
                         playAlarm(alarm_instance)
