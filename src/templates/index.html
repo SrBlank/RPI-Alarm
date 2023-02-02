@@ -84,9 +84,19 @@
               </label>
               <br>
               <select name="which_input" id="which_input">
-                <option value="Timer">Timer</option>
-                <option value="Button">Button</option>
-                <option value="Sensor">Sensor</option>
+                {% if defaults_dict["Input"] == "Timer" %}
+                  <option value="Timer">Timer</option>
+                  <option value="Button">Button</option>
+                  <option value="Sensor">Sensor</option>
+                {% elif defaults_dict["Input"] == "Button" %}
+                  <option value="Button">Button</option>
+                  <option value="Sensor">Sensor</option> 
+                  <option value="Timer">Timer</option>
+                {% elif defaults_dict["Input"] == "Sensor" %}  
+                  <option value="Sensor">Sensor</option>           
+                  <option value="Timer">Timer</option>
+                  <option value="Button">Button</option> 
+                {% endif %}
               </select>
               <!--Submit-->
               <br><button type="submit" class="btn">Add</button>

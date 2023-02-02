@@ -125,7 +125,7 @@ def update_settings():
     form_data = request.form
 
     defaults_dict["AlarmSound"] = form_data["alarm_sound"]
-    defaults_dict["Input"] = form_data["enable_button"]
+    defaults_dict["Input"] = form_data["which_input"]
     defaults_dict["PlayTime"] = form_data["playback_time"]
     defaults_dict["Nap"] = form_data["nap_timer"]
 
