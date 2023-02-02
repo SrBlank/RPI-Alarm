@@ -45,11 +45,11 @@ Finally open `alarm.py` and change the const variable `ALARM_TO_PLAY` to the ala
 This project is still a WIP. I have implemented this code on my RPI4 and I am currently testing it. The core functionality works and is waking me up on a daily basis. Below is a list of feautres I plan to add.
 
 - Beautify Website
-    - Show current time
-        - java script
-    - Show next alarm to be played
-        - java script
-    - Make check boxes bigger or have them as JS switches
+    - ~~Show current time~~
+        - ~~java script~~
+    - ~~Show next alarm to be played~~
+        - ~~java script~~
+    - ~~Make check boxes bigger or have them as JS switches~~
     - Add an edit alarm button
     - ~~Signify submission~~
         - ~~flask flashes?~~
