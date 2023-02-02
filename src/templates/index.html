@@ -55,7 +55,7 @@
               </label>
               <br>
               <select name="alarm_sound" id="AlarmSound">
-                <option value="placeholder">{{ defaults_dict["AlarmSound"] }}</option>
+                <option value="{{defaults_dict.AlarmSound}}">{{ defaults_dict["AlarmSound"] }}</option>
                 {% for x in alarm_sounds %}
                   {% if x != defaults_dict["AlarmSound"] %}}
                     <option value={{x}}>{{x}}</option>
@@ -87,29 +87,19 @@
           <br>
           <ul class="checkbox_grid">
             {% for x in alarms_list %}
-              {% if x.time in alarms_selcted  %}
                 <div class="switch_container">
                   <p name="time_in_switch_box">{{x.time}}</p>
                   <div class="switch_box">
                     <label class="switch">
-                      <input type="checkbox" name="slider_box" onclick="myFunction()" value={{x.time}} >
+                      {% if x.time in alarms_selcted %}
+                      <input type="checkbox" name="slider_box" onclick="myFunction()" value={{x.time}} checked>
+                      {% else %}
+                      <input type="checkbox" name="slider_box" onclick="myFunction()" value={{x.time}}>
+                      {% endif %}
                       <span class="slider"></span>
                     </label>
                   </div>
-                </div>
-                <!--<li><input type="checkbox" name="checkbox" value={{x}} checked /><label for="text1">{{x.time}}</label></li>-->
-              {% else %}
-              <div class="switch_container">
-                <p name="time_in_switch_box">{{x.time}}</p>
-                <div class="switch_box">
-                  <label class="switch">
-                    <input type="checkbox" name="slider_box" onclick="myFunction()" value={{x.time}} >
-                    <span class="slider"></span>
-                  </label>
-                </div>
-              </div>
-                <!--<li><input type="checkbox" name="checkboxN" value={{x}} /><label for="text1">{{x.time}}</label></li>-->
-              {% endif %} 
+                </div>              
             {% endfor %}
           </ul>
           <ul>

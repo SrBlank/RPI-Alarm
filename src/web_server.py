@@ -55,13 +55,14 @@ HTML PAGE RENDERING
 """
 @app.route("/")
 def hello_world():
+    """
     d = datetime.now()
     rn = d.strftime("%H:%M:%S")
 
     alarms_sel_sorted_2d = sort_arr_time(alarms_sel)
     with open("listfile.data", "wb") as alarms:
         pickle.dump([alarms_sel_sorted_2d, rn], alarms)
-
+    """
     sort_arr_time(list_of_alarms)
     alarms_sel_times = []
     for i in alarms_sel:
@@ -120,7 +121,7 @@ def timer_process():
         )
 
     list_of_alarms.append(add_alarm)
-    alarms_sel.append(add_alarm)
+    #alarms_sel.append(add_alarm)
 
     return redirect(url_for("hello_world"))
 
@@ -158,6 +159,7 @@ def remove_alarms():
 #
 # function will check/uncheck alarm boxes
 #
+"""
 @app.route("/update_alarms", methods=["POST"])
 def update_alarms():
     form_data = request.form
@@ -177,6 +179,7 @@ def update_alarms():
 
     flash("Alarms Updated!")
     return redirect(url_for("hello_world"))
+"""
 
 #
 # New function for getting new alarm form data
@@ -224,8 +227,22 @@ REQUEST HANDLERS
 @app.route("/store_data", methods=["GET", "POST"])
 def update_db():
     request_dict = request.get_json()
-    alarms_sel = request_dict["checked"].copy()
+    checked = request_dict["checked"].copy()
+    alarms_sel.clear()
+
+    for checked in checked:
+        for alarm in list_of_alarms:
+            if checked in alarm:
+                alarms_sel.append(alarm)
+
+    d = datetime.now()
+    rn = d.strftime("%H:%M:%S")
+
+    alarms_sel_sorted_2d = sort_arr_time(alarms_sel)
+    with open("listfile.data", "wb") as alarms:
+        pickle.dump([alarms_sel_sorted_2d, rn], alarms)
     
+    print(alarms_sel)
     return request_dict
     """
     d = datetime.now()
