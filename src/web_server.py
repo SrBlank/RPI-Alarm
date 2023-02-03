@@ -137,14 +137,19 @@ def update_settings():
 @app.route("/remove_alarms", methods=["POST"])
 def remove_alarms():
     form_data = request.form
-    form_checked = request.form.getlist("checkbox")
-    for i in list_of_alarms:
-        if i.time in form_checked:
-            list_of_alarms.remove(i)
+    form_checked = request.form.getlist("slider_box")
 
-    for i in alarms_sel:
-        if i.time in form_checked:
-            alarms_sel.remove(i)
+    for i in form_checked:
+        for j in list_of_alarms:
+            if j.time == i:
+                list_of_alarms.remove(j)
+                break
+
+    for i in form_checked:
+        for j in alarms_sel:
+            if j.time == i:
+                alarms_sel.remove(j)
+                break
 
     return redirect(url_for("hello_world"))
 

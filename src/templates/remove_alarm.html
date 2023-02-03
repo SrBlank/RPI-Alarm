@@ -2,6 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="../static/index.css">
+    <script src="https://kit.fontawesome.com/3cb62acee8.js" crossorigin="anonymous"></script>
   </head>
   <body>
 
@@ -18,13 +19,34 @@
         <form method="POST" action="/remove_alarms">
           <ul class="checkbox_grid">
             {% for x in alarms_list %}
-                <li><input type="checkbox" name="checkbox" value={{x}} /><label for="text1">{{x.time}}</label></li>
+              <!--Container for Switches-->
+                <div class="switch_container">
+                  <p name="time_in_switch_box">{{x.time}}</p>
+                  {% if x.input == "Timer" %}
+                    <i class="fa-solid fa-bell"></i>
+                  {% elif x.input == "Button" %}
+                    <i class="fa-solid fa-toggle-off"></i>
+                  {% elif x.input == "Sensor" %}
+                    <i class="fa-solid fa-person-rays"></i>
+                  {% endif %}
+                  <div class="switch_box">
+                    <label class="switch">
+                      <input type="checkbox" name="slider_box" value={{x.time}}>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>              
             {% endfor %}
           </ul>
-          <br><br><br>
+          <ul>
+            <br><br><br><br><br><br><br><br>
+          </ul> 
           <input type="submit" value = "Submit"/>
         </form>
-        
+
+        <form methods="POST" action="/">
+          <input type="submit" value = "Back"/>
+        </form>
 
       </div>
     </div>
