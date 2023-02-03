@@ -7,12 +7,13 @@
 
     <div class="header_container">
       <div class="header_content">
-        <h1>Raspberry PI Alarm</h1>
+        <h1>Settings</h1>
+        <p>These values represent the default form options as well as the nap alarm</p>
       </div>
     </div>
 
-    <div class="settings_from_container">
-      <div class="settings_form_content">
+    <div class="forms_container">
+      <div class="forms_content">
         <form method="POST" action="/update_settings">
           <!--Playback Time-->
             <br><label for="playback_time">
@@ -20,7 +21,7 @@
             </label>
             <br><input type="number" min="1" id="playback_time" placeholder="Leave Blank for Max" name="playback_time" value={{defaults_dict.PlayTime}}>
             <!--Alarm Sound-->
-            <br><label for="alarm_sound">
+            <br><br><label for="alarm_sound">
               <strong>Alarm Sound</strong>
             </label>
             <br>
@@ -33,23 +34,32 @@
               {% endfor %}
             </select>
             <!--Input Type-->
-            <br><label for="which_input">
+            <br><br><label for="which_input">
               <strong>Input Type</strong>
             </label>
             <br>
             <select name="which_input" id="which_input">
-              <option value="Timer">Timer</option>
-              <option value="Button">Button</option>
-              <option value="Sensor">Sensor</option>
+              {% if defaults_dict["Input"] == "Timer" %}
+                <option value="Timer">Timer</option>
+                <option value="Button">Button</option>
+                <option value="Sensor">Sensor</option>
+              {% elif defaults_dict["Input"] == "Button" %}
+                <option value="Button">Button</option>
+                <option value="Sensor">Sensor</option> 
+                <option value="Timer">Timer</option>
+              {% elif defaults_dict["Input"] == "Sensor" %}  
+                <option value="Sensor">Sensor</option>           
+                <option value="Timer">Timer</option>
+                <option value="Button">Button</option> 
+              {% endif %}
             </select>
             <!--Nap Button-->
-            <br><label for="nap_timer">
-              <strong>Button</strong>
+            <br><br><label for="nap_timer">
+              <strong>Nap Alarm</strong>
             </label>
-            <br>
             <br><input type="number" min="1" id="nap_timer"  name="nap_timer" value={{defaults_dict.Nap}}>
             <!--Submit-->
-            <br><input type="submit" value="Update Settings">
+            <br><br><input type="submit" value="Update Settings">
         </form>
         <!--Back-->
         <form methods="POST" action="/">
