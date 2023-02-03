@@ -240,7 +240,7 @@ input:checked + .slider:before {
 }
 
 .switch_box {
-  width: 150px;
+  width: 130px;
   height: 40px;
   /*border: 2px solid #FFFFFF;*/
   margin: 5px 5px 5px 5px;
@@ -254,10 +254,20 @@ input:checked + .slider:before {
 }
 
 .switch_container p {
-  width: 75px;
-  height: 40px;
-  left: 90px;
-  top: 65px;
+  /*border: 2px solid #FFFFFF;*/
+  width: 40px;
+  height: 20px;
+  left: 95px;
+  top: 41px;
   bottom: 0px;
+  position: relative;
+}
+
+.switch_container i {
+  /*border: 2px solid #FFFFFF;*/
+  width: 20px;
+  height: 20px;
+  right: 25px;
+  top: 25px;
   position: relative;
 }
