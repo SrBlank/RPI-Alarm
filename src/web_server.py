@@ -18,16 +18,15 @@ app.secret_key = os.getenv("app_secret")
 MINUTES_IN_DAY = 1440
 ADD_2_ALARMS = False
 DEL_LISTFILE = True
-NAP_DEFAULT = 40  # To be changed into settings
 
 list_of_alarms = []
 alarms_sel = []
 alarms_sel_sorted_2d = []
 defaults_dict = {
-    "PlayTime" : "3",
-    "AlarmSound" : "generic_alarm.mp3",
-    "Input" : "Button",
-    "Nap" : "40"
+    "PlayTime": "3",
+    "AlarmSound": "generic_alarm.mp3",
+    "Input": "Button",
+    "Nap": "40",
 }
 
 alarm_sounds = os.listdir("./alarm_sounds")
@@ -53,6 +52,8 @@ if ADD_2_ALARMS:
 """
 HTML PAGE RENDERING
 """
+
+
 @app.route("/")
 def hello_world():
     sort_arr_time(list_of_alarms)
@@ -65,8 +66,9 @@ def hello_world():
         alarms_list=list_of_alarms,
         alarms_selcted=alarms_sel_times,
         alarm_sounds=alarm_sounds,
-        defaults_dict=defaults_dict
+        defaults_dict=defaults_dict,
     )
+
 
 #
 # Function renders remove_alarm.html
@@ -75,16 +77,15 @@ def hello_world():
 def removeablealarms():
     return render_template("remove_alarm.html", alarms_list=list_of_alarms)
 
+
 #
 # Function renders settings.html
 #
 @app.route("/settings", methods=["POST"])
-def settings():      
+def settings():
     return render_template(
-        "settings.html",
-        alarm_sounds=alarm_sounds,
-        defaults_dict=defaults_dict
-        )
+        "settings.html", alarm_sounds=alarm_sounds, defaults_dict=defaults_dict
+    )
 
 
 """
@@ -95,10 +96,8 @@ FORM PROCESSES
 #
 @app.route("/timer_process", methods=["POST"])
 def timer_process():
-    curr_time = datetime.now()
     time_change = timedelta(minutes=int(defaults_dict["Nap"]))
-    new_time = curr_time + time_change
-    new_time = new_time.strftime("%H:%M")
+    new_time = (datetime.now() + time_change).strftime("%H:%M")
 
     for item in list_of_alarms:
         if new_time in item:
@@ -109,13 +108,14 @@ def timer_process():
         new_time,
         playtime=defaults_dict["PlayTime"],
         alarm_sound=defaults_dict["AlarmSound"],
-        input=defaults_dict["Input"]
-        )
+        input=defaults_dict["Input"],
+    )
 
     list_of_alarms.append(add_alarm)
-    #alarms_sel.append(add_alarm)
+    # alarms_sel.append(add_alarm)
 
     return redirect(url_for("hello_world"))
+
 
 #
 # Function will update settings
@@ -131,6 +131,7 @@ def update_settings():
 
     return redirect(url_for("hello_world"))
 
+
 #
 # Function will remove alarms from list
 #
@@ -142,16 +143,15 @@ def remove_alarms():
     for i in form_checked:
         for j in list_of_alarms:
             if j.time == i:
+                if j in alarms_sel:
+                    alarms_sel.remove(j)
                 list_of_alarms.remove(j)
                 break
 
-    for i in form_checked:
-        for j in alarms_sel:
-            if j.time == i:
-                alarms_sel.remove(j)
-                break
+    dump_data()
 
     return redirect(url_for("hello_world"))
+
 
 #
 # New function for getting new alarm form data
@@ -159,26 +159,18 @@ def remove_alarms():
 @app.route("/process_time", methods=["POST"])
 def new_alarm():
     form_data = request.form
-    # print(form_data)
-
     new_time = form_data["time_prompt"]
-    new_playback = form_data["playback_time"]
-    alarm_sounds_form = form_data["alarm_sound"]
-    sensor_type_form = form_data["which_input"]
 
     for item in list_of_alarms:
         if new_time in item:
             flash("Alarm Already Exists!")
             return redirect(url_for("hello_world"))
-    if isinstance(new_playback, int):
-        flash("Playback Must Be An Integer!")
-        return redirect(url_for("hello_world"))
 
     add_alarm = Alarm(
-        new_time,
-        playtime=new_playback,
-        alarm_sound=alarm_sounds_form,
-        input=sensor_type_form,
+        form_data["time_prompt"],
+        playtime=form_data["playback_time"],
+        alarm_sound=form_data["alarm_sound"],
+        input=form_data["which_input"],
     )
     list_of_alarms.append(add_alarm)
 
@@ -203,14 +195,19 @@ def update_db():
             if checked in alarm:
                 alarms_sel.append(alarm)
 
+    dump_data()
+
+    return request_dict
+
+
+def dump_data():
     d = datetime.now()
     rn = d.strftime("%H:%M:%S")
 
     alarms_sel_sorted_2d = sort_arr_time(alarms_sel)
     with open("listfile.data", "wb") as alarms:
         pickle.dump([alarms_sel_sorted_2d, rn], alarms)
-    
-    return request_dict
+
 
 if __name__ == "__main__":
     if DEL_LISTFILE:
