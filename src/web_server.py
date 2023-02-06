@@ -62,6 +62,8 @@ def hello_world():
     for i in alarms_sel:
         alarms_sel_times.append(i.time)
 
+    print(list_of_alarms)
+
     return render_template(
         "index.html",
         alarms_list=list_of_alarms,
