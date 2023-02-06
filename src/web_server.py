@@ -145,14 +145,7 @@ def remove_alarms():
     form_data = request.form
     form_checked = request.form.getlist("slider_box")
 
-    for i in form_checked:
-        for j in list_of_alarms:
-            if j.time == i:
-                if j in alarms_sel:
-                    alarms_sel.remove(j)
-                list_of_alarms.remove(j)
-                break
-
+    remove_alarms_list(list_of_alarms, alarms_sel, form_checked)
     dump_data()
 
     return redirect(url_for("hello_world"))
@@ -217,6 +210,10 @@ def dump_data():
     with open("listfile.data", "wb") as alarms:
         pickle.dump([alarms_sel_sorted_2d, rn], alarms)
 
+def remove_alarms_list(list_of_alarms, selected_alarms, form_checked):
+    for time in form_checked:
+        list_of_alarms[:] = [alarm for alarm in list_of_alarms if alarm.time != time]
+        selected_alarms[:] = [alarm for alarm in list_of_alarms if alarm.time != time]
 
 if __name__ == "__main__":
     if DEL_LISTFILE:
