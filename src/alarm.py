@@ -2,19 +2,10 @@ import os
 import time
 import pickle
 import logging
-import signal
 import pygame
-import keyboard
+import pynput
 
 from datetime import datetime
-from subprocess import (
-    Popen,
-    PIPE,
-    STDOUT,
-    TimeoutExpired,
-    check_output,
-    CalledProcessError,
-)
 
 from support_functions import sort_arr_time
 from alarm_class import Alarm
@@ -32,6 +23,8 @@ logger = logging.getLogger()
 logger.info("Starting Log File")
 
 """ INITILIZATION """
+pygame.init()
+
 diff_array = []
 diff_arr_time_curr = 0
 diff_arr_time_prev = 0
@@ -43,7 +36,6 @@ ALARM_PLAYTIME = 5
 ALARM_TO_PLAY = "./alarm_sounds/generic_alarm.mp3"
 GPIO_INPUT_PIN = 10
 
-
 """
 Alarm Control Functions
 """
@@ -51,8 +43,9 @@ Alarm Control Functions
 # Function will handle intterupt from GPIO or keyboard
 #
 def interrupt_handler(channel=None):
-    logger.critical("Interrupt Detected")
-    pygame.mixer.music.stop()
+    if channel == pynput.keyboard.Key.esc:
+        logger.critical("Interrupt Detected")
+        pygame.mixer.music.stop()
 
 #
 # Function will play alarm for x time or loop until intterupt
@@ -67,8 +60,8 @@ def play_alarm_timer(alarm_instance):
 """
 Button input intialization
 """
-pygame.init() 
-keyboard.add_hotkey("esc", interrupt_handler)
+listener = pynput.keyboard.Listener(on_press=interrupt_handler) #keyboard.add_hotkey("esc", interrupt_handler)
+listener.start()
 logger.info("Intilizaed Keyboard Interrupt")
 
 try:
@@ -78,7 +71,9 @@ try:
     GPIO.setup(GPIO_INPUT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.add_event_detect(GPIO_INPUT_PIN, GPIO.RISING, callback=interrupt_handler)
     logger.info("Intiliazed Variables and GPIO")
-except (RuntimeError, ModuleNotFoundError):
+except:
+    pass
+#except (RuntimeError, ModuleNotFoundError, ImportError):
     logger.info("Failed to intialize GPIO")
 
 """ 
