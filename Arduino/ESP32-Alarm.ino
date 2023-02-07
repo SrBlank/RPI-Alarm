@@ -5,9 +5,9 @@
 #define CM_TO_INCH 0.393701
 #define PROXIMITY 10
 
-"""
-HTML PAGE RENDERING
-"""
+const char* ssid = "**********";
+const char* password = "********";
+const char* host = "**.**.**.**"
 const int port = 3000;  
 const int trigPin = 5;
 const int echoPin = 18;
