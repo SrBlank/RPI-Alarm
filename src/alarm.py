@@ -32,8 +32,6 @@ logger = logging.getLogger()
 logger.info("Starting Log File")
 
 """ INITILIZATION """
-pygame.init() # move this at a later time
-
 diff_array = []
 diff_arr_time_curr = 0
 diff_arr_time_prev = 0
@@ -69,8 +67,11 @@ def play_alarm_timer(alarm_instance):
 """
 Button input intialization
 """
+pygame.init() 
+keyboard.add_hotkey("esc", interrupt_handler)
+logger.info("Intilizaed Keyboard Interrupt")
+
 try:
-    logger.info("Attempting to intialize GPIO")
     import RPi.GPIO as GPIO
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
@@ -78,10 +79,7 @@ try:
     GPIO.add_event_detect(GPIO_INPUT_PIN, GPIO.RISING, callback=interrupt_handler)
     logger.info("Intiliazed Variables and GPIO")
 except (RuntimeError, ModuleNotFoundError):
-    logger.info("Failed to intialize GPIO, keyboard input will be used")
-    keyboard.add_hotkey("esc", interrupt_handler)
-    logger.info("Intilizaed Variables and Keyboard")
-
+    logger.info("Failed to intialize GPIO")
 
 """ 
 LISTFILE.DATA INTILIZATION
