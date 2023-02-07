@@ -222,9 +222,9 @@ def dump_data():
     d = datetime.now()
     rn = d.strftime("%H:%M:%S")
 
-    alarms_sel_sorted_2d = sort_arr_time(alarms_sel)
+    sort_arr_time(alarms_sel)
     with open("listfile.data", "wb") as alarms:
-        pickle.dump([alarms_sel_sorted_2d, rn], alarms)
+        pickle.dump([alarms_sel, rn], alarms)
 
 #
 # Function will remove alarms from list_of_alarms and selected_alarms
