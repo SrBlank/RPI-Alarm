@@ -1,12 +1,14 @@
 #include <WiFi.h>
+#include <HTTPClient.h>
 #define CONNECTION_TIMEOUT 10
 #define SOUND_SPEED 0.034
 #define CM_TO_INCH 0.393701
 #define PROXIMITY 10
 
-
-const char* ssid = "**********";
-const char* password = "********";
+"""
+HTML PAGE RENDERING
+"""
+const int port = 3000;  
 const int trigPin = 5;
 const int echoPin = 18;
 
@@ -60,6 +62,21 @@ void loop() {
   distanceInch = (duration * SOUND_SPEED/2) * CM_TO_INCH; // Convert to inches
 
   if(distanceInch <= PROXIMITY && distanceInch > 0){
+    HTTPClient http;
+
+    http.begin("http://" + String(host) + ":" + String(port) + "/detect");
+    http.addHeader("Content-Type", "application/json");
+    http.POST("{\"distance\": " + String(distanceInch) + "}");
+
+    int httpCode = http.GET();
+    if (httpCode > 0) {
+      String response = http.getString();
+      Serial.println(response);
+    } else 
+      Serial.println("Error sending HTTP request: " + http.errorToString(httpCode));
+
+    http.end();
+    
     Serial.println("Proximity Breached");
     Serial.print("Distance (inch): ");
     Serial.println(distanceInch);
