@@ -62,8 +62,6 @@ def hello_world():
     for i in alarms_sel:
         alarms_sel_times.append(i.time)
 
-    print(list_of_alarms)
-
     return render_template(
         "index.html",
         alarms_list=list_of_alarms,
@@ -203,7 +201,23 @@ def update_db():
 
     return request_dict
 
+#
+# Function will recieve request from ESP
+#
+@app.route("/detect", methods=["POST"])
+def detect():
+    data = request.get_json()
+    distance = data["distance"]
+    print(distance)
+    return "Person detected at distance " + str(distance) + " cm"
 
+"""
+OTHER FUNCTIONS
+"""
+
+#
+# Function will save alarms_sel into listfile.data using pickle
+#
 def dump_data():
     d = datetime.now()
     rn = d.strftime("%H:%M:%S")
@@ -212,6 +226,9 @@ def dump_data():
     with open("listfile.data", "wb") as alarms:
         pickle.dump([alarms_sel_sorted_2d, rn], alarms)
 
+#
+# Function will remove alarms from list_of_alarms and selected_alarms
+#
 def remove_alarms_list(list_of_alarms, selected_alarms, form_checked):
     for time in form_checked:
         list_of_alarms[:] = [alarm for alarm in list_of_alarms if alarm.time != time]
