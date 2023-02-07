@@ -49,11 +49,11 @@ FLASH CONTAINER
 FORMS CONTAINER
 */
 .forms_container {
-    /*border: 5px solid #FFFFFF;*/
-    height: 75vh;
-    width: 97vw;
-    position: relative;
-    margin-bottom: 5px;
+  /*border: 5px solid #FFFFFF;*/
+  min-height: 55vh;
+  width: 97vw;
+  position: relative;
+  margin-bottom: 5px;
 }
 
 .forms_content {
@@ -276,8 +276,9 @@ input:checked + .slider:before {
 Button Container
 */
 .buttons_container{
-  margin-top: 20px;
   /*border: 2px solid #FFFFFF;*/
+  clear: both; 
+  margin-top: 20px;
   height: 20vh;
   width: 97vw;
   text-align: center;

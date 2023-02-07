@@ -105,10 +105,6 @@ def timer_process():
             flash("Alarm Already Exists!")
             return redirect(url_for("hello_world"))
 
-    if len(list_of_alarms) == MAX_ALARMS:
-        flash("Maximum Number of Alarms Reached!")
-        return redirect(url_for("hello_world"))
-
     add_alarm = Alarm(
         new_time,
         playtime=defaults_dict["PlayTime"],
@@ -163,10 +159,6 @@ def new_alarm():
         if new_time in item:
             flash("Alarm Already Exists!")
             return redirect(url_for("hello_world"))
-
-    if len(list_of_alarms) == MAX_ALARMS:
-        flash("Maximum Number of Alarms Reached!")
-        return redirect(url_for("hello_world"))
 
     add_alarm = Alarm(
         form_data["time_prompt"],
