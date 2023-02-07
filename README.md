@@ -42,36 +42,12 @@ Finally open `alarm.py` and change the const variable `ALARM_TO_PLAY` to the ala
 
 ## Future Features
 
-This project is still a WIP. I have implemented this code on my RPI4 and I am currently testing it. The core functionality works and is waking me up on a daily basis. Below is a list of feautres I plan to add.
+The project is still a WIP. Currently development is being adjusted and tested for windows and linux based systems. Below is a list of features I want to add. I am setting these goals for myself or I will keep adding features to no end. I hope to add these features and wrap up the project by the end of Feburary 2023. 
 
-- Beautify Website
-    - ~~Show current time~~
-        - ~~java script~~
-    - ~~Show next alarm to be played~~
-        - ~~java script~~
-    - ~~Make check boxes bigger or have them as JS switches~~
-    - ~~Signify submission~~
-        - ~~flask flashes?~~
-    - ~~Maybe show what mp3 file will be played~~
-- Code
-    - ~~Add a nap button which will create an alarm that will play in X min~~
-    - ~~Add button intterupt~~
-    - Add keyboard input as button 
-    - ~~Have listfile.data not be overwritten every time~~
-    - ~~Implement alarm class for customizability~~
-        - ~~Different alarm sound for different alarms?~~
-        - ~~Set up days for alarms?~~
-    - ~~Create a config file~~ 
-        - ~~Alarm playblack time~~
-        - ~~Directory?~~
-        - ~~Add alarms?~~
-    - ~~Clean up alarm file~~
-- ~~Turn off Alarm~~
-    - ~~Timer~~
-    - ~~Button~~
-    - Sensor
-        - Ultrasonic Sensor HC-SR04
-    
-
-
+- Implement HC-SR04 Sensor 
+- Add keyboard as button input 
+- Setting to change what key is used to intterupt
+- Validation for end user to avoid using linux features on windows, vice versa
+- Maybe - Add a volume slider 
+- Maybe - test alarm button to see how loud alarm is
 
