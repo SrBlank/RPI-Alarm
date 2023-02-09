@@ -1,10 +1,8 @@
 # RPI-Alarm
-This is a flask web server that can be ran on any linux computer that is then connected to a speaker. The user will be able to access the web server and set alarms which the server will then execute when it is time.
+Our Flask web application is designed to run on your local network and provides a convenient solution for setting alarms. The application utilizes a dedicated computer connected to speakers, allowing you to set alarms from any device. The timer, button, or sensor can be used to turn off the alarm.
 
-## Installiation 
----
-## Setup up Button
-Using using these [instructions](https://raspberrypihq.com/use-a-push-button-with-raspberry-pi-gpio/) you will be able to set up a button to your raspberry pi. As of now the pins used in the link are the same ones used in this project.
+The HC-SR04 sensor is used to detect movement and turn off the alarm. The sensor sends a POST request to the computer running the Flask server, and the sensor code is run on an ESP32. The button used to turn off the alarm can be a GPIO button or a keyboard button, offering flexible options for your setup. The timer will turn off the alarm by default if no button or sensor is found. The code is cross-platform and has been tested on both Windows and Ubuntu operating systems.
+
 
 ## Setting up and Running Server
 Clone the repository onto the computer you want hosting the server. Then install the Python3 requirments by doing:
@@ -13,15 +11,24 @@ Clone the repository onto the computer you want hosting the server. Then install
 pip3 install -r requirments.txt
 ```
 
-You will also need to install `mpg123` to play `.mp3` files. Install this by running the command below in the terminal:
-
-```bash
-sudo apt install mpg321
-```
-
 Next in `/RPI-Alarm/src/` create a `.env` file with a variable called `app_secret` and set it equal to anything. This is for Flask to support certain functions.
 
 Finally start the web server by running `python3 web_server.py`. You will see two address one that is `127.0.0.1:5000` and another that will also have the `:5000` suffix. The second address is the address you will want to use on other devices to connect to the server and set alarms.
+
+## Setup Button
+Using using these [instructions](https://raspberrypihq.com/use-a-push-button-with-raspberry-pi-gpio/) you will be able to set up a button to your raspberry pi. As of now the pins used in the link are the same ones used in this project.
+
+## Setup Sensor
+The code has been tested and ran on an ESP32 and an HC-SR04 sensor, these setup instructions may not work for other boards or sensors. 
+
+Start by following the instructions [here](https://randomnerdtutorials.com/esp32-hc-sr04-ultrasonic-arduino/) to connect your sensor to your ESP32. Once that is setup download and install Arduino IDE. Then follow these [instructions](https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/) to set up your Arduino IDE. Once setup open `RPI-Alarm/Arduino/ESP32-Alarm.ino` and change the following
+
+- `ssid` to your networks SSID (this is just the name of your network), 
+- `password` to your networks password
+- `host` this is the IP Address of your computer running Flask
+- `port` this is the port your Flask app is running on, 5000 by default
+
+Once the changes have been made plug and your ESP32 is plugged in, press the upload button in the IDE. You will eventually see the terminal saying `Connecting......` when you see this prompt press the BOOT buttton on the ESP32. The terminal should then write to the board and your sensor is setup.
 
 ## Configurations
 
