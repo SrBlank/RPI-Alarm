@@ -14,44 +14,56 @@
 
     <div class="forms_container">
       <div class="forms_content">
-        <div class="checkbox_container">
-          <div class="checkbox_content">
-            <form method="POST" action="/remove_alarms">
-              <ul class="checkbox_grid">
-                {% for x in alarms_list %}
-                  <!--Container for Switches-->
-                    <div class="switch_container">
-                      <p name="time_in_switch_box">{{x.time}}</p>
-                      {% if x.input == "Timer" %}
-                        <i class="fa-solid fa-bell"></i>
-                      {% elif x.input == "Button" %}
-                        <i class="fa-solid fa-toggle-off"></i>
-                      {% elif x.input == "Sensor" %}
-                        <i class="fa-solid fa-person-rays"></i>
-                      {% endif %}
-                      <div class="switch_box">
-                        <label class="switch">
-                          <input type="checkbox" name="slider_box" value={{x.time}}>
-                          <span class="slider"></span>
-                        </label>
-                      </div>
-                    </div>              
-                {% endfor %}
-              </ul>
-              <ul>
-                <br><br><br><br><br><br><br><br>
-              </ul> 
-              <input type="submit" value = "Remove Selected Alarms"/>
-            </form>
-
-            <form methods="POST" action="/">
-              <input type="submit" value = "Back"/>
-            </form>
-
-          </div>
+        <div class="openBtn">
+          <button class="openButton" onclick="submitForm()"><strong>Remove Selected Alarms</strong></button>
         </div>
+        <form method="POST" action="/remove_alarms" id="form1">
+          <ul class="checkbox_grid">
+            {% for x in alarms_list %}
+              <!--Container for Switches-->
+                <div class="switch_container">
+                  <p name="time_in_switch_box">{{x.time}}</p>
+                  {% if x.input == "Timer" %}
+                    <i class="fa-solid fa-bell"></i>
+                  {% elif x.input == "Button" %}
+                    <i class="fa-solid fa-toggle-off"></i>
+                  {% elif x.input == "Sensor" %}
+                    <i class="fa-solid fa-person-rays"></i>
+                  {% endif %}
+                  <div class="switch_box">
+                    <label class="switch">
+                      {% if x.time in alarms_selcted %}
+                      <input type="checkbox" name="slider_box" onclick="myFunction()" value={{x.time}} checked>
+                      {% else %}
+                      <input type="checkbox" name="slider_box" onclick="myFunction()" value={{x.time}}>
+                      {% endif %}
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>              
+            {% endfor %}
+          </ul>
+        </form>
       </div>
     </div>
+
+    <div class="buttons_container">
+      <form methods="POST" action="/">
+        <input type="submit" class="buttons" value = "Back"/>
+      </form>
+    </div>
+
+    <div class="footer_container">
+      <div class="footer_content">
+
+      </div>
+    </div>
+
+    <script>
+    function submitForm() {
+      document.getElementById('form1').submit();
+    }
+    </script>
   </body>
 </html>
 
