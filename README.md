@@ -1,5 +1,5 @@
 # RPI-Alarm
-Our Flask web application is designed to run on your local network and provides a convenient solution for setting alarms. The application utilizes a dedicated computer connected to speakers, allowing you to set alarms from any device. The timer, button, or sensor can be used to turn off the alarm.
+This Flask web application is designed to run on your local network and provides a convenient solution for setting alarms. The application utilizes a dedicated computer connected to speakers, allowing you to set alarms from any device. The timer, button, or sensor can be used to turn off the alarm.
 
 The HC-SR04 sensor is used to detect movement and turn off the alarm. The sensor sends a POST request to the computer running the Flask server, and the sensor code is run on an ESP32. The button used to turn off the alarm can be a GPIO button or a keyboard button, offering flexible options for your setup. The timer will turn off the alarm by default if no button or sensor is found. The code is cross-platform and has been tested on both Windows and Ubuntu operating systems.
 
@@ -16,24 +16,26 @@ Next in `/RPI-Alarm/src/` create a `.env` file with a variable called `app_secre
 Finally start the web server by running `python3 web_server.py`. You will see two address one that is `127.0.0.1:5000` and another that will also have the `:5000` suffix. The second address is the address you will want to use on other devices to connect to the server and set alarms.
 
 ## Setup Button
-Using using these [instructions](https://raspberrypihq.com/use-a-push-button-with-raspberry-pi-gpio/) you will be able to set up a button to your raspberry pi. As of now the pins used in the link are the same ones used in this project.
+Using using these [instructions](https://raspberrypihq.com/use-a-push-button-with-raspberry-pi-gpio/) you will be able to set up a button to your raspberry pi. In `/src/alarm.py` change the `GPIO_INPUT_PIN` to the PIN you will be using.
+
+The keyboard option will always be enabled regardless of GPIO button. To change the key used to turn off the alamr navigate back to `alarm.py` and on line 46 change `pynput.keyboard.Key.esc` to whichever key you would like to use. Refernece the pynput docs [here](https://pynput.readthedocs.io/en/latest/keyboard.html) for more key configurations.
 
 ## Setup Sensor
 The code has been tested and ran on an ESP32 and an HC-SR04 sensor, these setup instructions may not work for other boards or sensors. 
 
-Start by following the instructions [here](https://randomnerdtutorials.com/esp32-hc-sr04-ultrasonic-arduino/) to connect your sensor to your ESP32. Once that is setup download and install Arduino IDE. Then follow these [instructions](https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/) to set up your Arduino IDE. Once setup open `RPI-Alarm/Arduino/ESP32-Alarm.ino` and change the following
+Start by following the instructions [here](https://randomnerdtutorials.com/esp32-hc-sr04-ultrasonic-arduino/) to connect your sensor to your ESP32. Once that is setup download and install Arduino IDE. Then follow these [instructions](https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/) to set up your Arduino IDE. Once setup open `/Arduino/ESP32-Alarm.ino` and change the following
 
+- `PROXIMITY` to the number in inches of how close the person has to be set off the sensor
 - `ssid` to your networks SSID (this is just the name of your network), 
 - `password` to your networks password
 - `host` this is the IP Address of your computer running Flask
-- `port` this is the port your Flask app is running on, 5000 by default
+- `port` this is the port your Flask app is running on, `5000` by default
+- `trigPin` based on board, default `5` for ESP32
+- `echoPin` based on board, default `18` for ESP32
 
-Once the changes have been made plug and your ESP32 is plugged in, press the upload button in the IDE. You will eventually see the terminal saying `Connecting......` when you see this prompt press the BOOT buttton on the ESP32. The terminal should then write to the board and your sensor is setup.
+Once the changes have been made plug and your ESP32 is plugged in, press the upload button in the IDE. You will eventually see the terminal saying `Connecting......` when you see this prompt press the BOOT buttton on the ESP32. The terminal should then write to the board and your sensor is setup. Before disconnecting the board, you can test to see if it works by looking at serial output `115200`. If everything looks good, your sensor is setup.
 
-## Configurations
-
-### Adding More Alarms
-
+## Adding More Alarms
 Alarms must be of `.mp3` extension to play by default. To install new alarms either download .mp3 files or use youtube-dl to download your own from youtube. To use youtube-dl download it with the command below:
 
 ```bash
