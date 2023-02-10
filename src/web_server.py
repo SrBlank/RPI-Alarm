@@ -121,17 +121,16 @@ def timer_process():
 #
 # Function will update settings
 #
-@app.route("/update_settings", methods=["POST"])
+@app.route("/update_settings", methods=['GET', 'POST'])
 def update_settings():
     form_data = request.form
-
-    defaults_dict["AlarmSound"] = form_data["alarm_sound"]
-    defaults_dict["Input"] = form_data["which_input"]
-    defaults_dict["PlayTime"] = form_data["playback_time"]
-    defaults_dict["Nap"] = form_data["nap_timer"]
+    
+    defaults_dict["AlarmSound"] = form_data["alarm_sound_setting"]
+    defaults_dict["Input"] = form_data["which_input_setting"]
+    defaults_dict["PlayTime"] = form_data["playback_time_setting"]
+    defaults_dict["Nap"] = form_data["nap_setting"]
 
     return redirect(url_for("hello_world"))
-
 
 #
 # Function will remove alarms from list

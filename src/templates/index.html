@@ -148,10 +148,66 @@
       <form method="POST" action="/removeablealarms">
         <input type="submit" class="buttons" value = "Remove Alarms"/>
       </form>
-      <form method="POST" action="/settings">
+      <button class="openButton" onclick="openFormSettings()"><strong>Settings</strong></button>       
+      <!--<form method="POST" action="/settings">
         <input type="submit" class="buttons" value = "Settings"/>
-      </form>
+      </form>-->
     </div>
+    <div class="loginPopup">
+      <div class="formPopup" id="settingPopupForm">
+        <form method="POST" action="/update_settings" class="formContainer">
+          <!--START OF FORM-->
+          <h2>Settings</h2>
+          <!--Playback Time-->
+          <label for="playback_time_setting">
+            <strong>Playback Time</strong>
+          </label>
+          <br><input type="number"  min="1" id="playback_time_setting"  name="playback_time_setting" value={{defaults_dict.PlayTime}}>
+          <!--Alarm Sound-->
+          <br><label for="alarm_sound_setting">
+            <strong>Alarm Sound</strong>
+          </label>
+          <br>
+          <select name="alarm_sound_setting" id="alarm_sound_setting">
+            <option value="{{defaults_dict.AlarmSound}}">{{ defaults_dict["AlarmSound"] }}</option>
+            {% for x in alarm_sounds %}
+              {% if x != defaults_dict["AlarmSound"] %}}
+                <option value={{x}}>{{x}}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+          <!--Input Type-->
+          <br><label for="which_input_setting">
+            <strong>Input Type</strong>
+          </label>
+          <br>
+          <select name="which_input_setting" id="which_input_setting">
+            {% if defaults_dict["Input"] == "Timer" %}
+              <option value="Timer">Timer</option>
+              <option value="Button">Button</option>
+              <option value="Sensor">Sensor</option>
+            {% elif defaults_dict["Input"] == "Button" %}
+              <option value="Button">Button</option>
+              <option value="Sensor">Sensor</option> 
+              <option value="Timer">Timer</option>
+            {% elif defaults_dict["Input"] == "Sensor" %}  
+              <option value="Sensor">Sensor</option>           
+              <option value="Timer">Timer</option>
+              <option value="Button">Button</option> 
+            {% endif %}
+          <!--Nap Alarm-->
+          </select>
+          <br><label for="nap_setting">
+            <strong>Nap Alarm</strong>
+          </label>
+          <br>
+          <input type="number" min="1" id="nap_setting"  name="nap_setting" value={{defaults_dict.Nap}}>
+          <!--Submit-->
+          <br><button type="submit" class="btn">Save</button>
+          <button type="button" class="btn cancel" onclick="closeFormSettings()">Close</button>
+        </form>
+      </div>
+    </div> 
 
     <div class="footer_container">
       <div class="footer_content">
@@ -161,6 +217,12 @@
 
     <!--script> src="../static/clock.js" </script>-->
     <script>
+      function openFormSettings() {
+        document.getElementById("settingPopupForm").style.display = "block";
+      }
+      function closeFormSettings() {
+        document.getElementById("settingPopupForm").style.display = "none";
+      }
       function openForm() {
         document.getElementById("popupForm").style.display = "block";
       }
