@@ -3,7 +3,12 @@ import time
 import pickle
 import logging
 import pygame
-import pynput
+KEYBOARD_INIT = True
+try:
+    import pynput
+except:
+    KEYBOARD_INIT = False
+    print("UNABLE TO IMPORT PYNPUT")
 
 from datetime import datetime
 
@@ -42,10 +47,14 @@ Alarm Control Functions
 #
 # Function will handle intterupt from GPIO or keyboard
 #
-def interrupt_handler(channel=None):
-    if channel == pynput.keyboard.Key.esc:
+def interrupt_handler_keyboard(channel=None):
+    if KEYBOARD_INIT and channel == pynput.keyboard.Key.esc:
         logger.critical("Interrupt Detected")
         pygame.mixer.music.stop()
+
+def interrupt_handler_GPIO(channel=None):
+    pygame.mixer.music.stop()
+
 
 #
 # Function will play alarm for x time or loop until intterupt
@@ -60,16 +69,19 @@ def play_alarm_timer(alarm_instance):
 """
 Button input intialization
 """
-listener = pynput.keyboard.Listener(on_press=interrupt_handler) #keyboard.add_hotkey("esc", interrupt_handler)
-listener.start()
-logger.info("Intilizaed Keyboard Interrupt")
+if KEYBOARD_INIT:
+    listener = pynput.keyboard.Listener(on_press=interrupt_handler_keyboard) 
+    listener.start()
+    logger.info("Intilizaed Keyboard Interrupt")
+else:
+    logger.info("Unable to Initalize Keyboard Interrupt")
 
 try:
     import RPi.GPIO as GPIO
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(GPIO_INPUT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.add_event_detect(GPIO_INPUT_PIN, GPIO.RISING, callback=interrupt_handler)
+    GPIO.add_event_detect(GPIO_INPUT_PIN, GPIO.RISING, callback=interrupt_handler_GPIO)
     logger.info("Intiliazed Variables and GPIO")
 except:
     pass
