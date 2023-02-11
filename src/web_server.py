@@ -195,17 +195,18 @@ def update_db():
 #
 # Function will recieve request from ESP
 #
-@app.route("/detect", methods=["POST"])
+@app.route("/detect", methods=['GET', 'POST'])
 def detect():
-    data = request.get_json()
-    distance = data["distance"]
-    print(distance)
-    return "Person detected at distance " + str(distance) + " cm"
+    global data
+    if request.method == 'POST':
+        data = request.get_json()
+        return 'Data received'
+    elif request.method == 'GET':
+        return data
 
 """
 OTHER FUNCTIONS
 """
-
 #
 # Function will save alarms_sel into listfile.data using pickle
 #

@@ -3,6 +3,8 @@ import time
 import pickle
 import logging
 import pygame
+import requests
+import json
 KEYBOARD_INIT = True
 try:
     import pynput
@@ -44,6 +46,14 @@ GPIO_INPUT_PIN = 10
 """
 Alarm Control Functions
 """
+#
+# Function will get data from /detect
+#
+def check_distance_data():
+    response = requests.get("http://10.0.0.23:5000/detect")
+    data = json.loads(response.text)
+    return data["distance"]
+
 #
 # Function will handle intterupt from GPIO or keyboard
 #
