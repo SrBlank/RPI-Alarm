@@ -300,3 +300,22 @@ Button Container
   font-weight: bold;
 }
 
+
+
+/*
+Volume Slider
+*/
+.volume_container {
+  /*border: 2px solid #FFFFFF;*/
+  text-align: center;
+  margin-top: -30px;
+  width: 100%; /* Width of the outside container */
+}
+
+.slider_volume:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+.slider_volume {
+  width: 200px;
+}

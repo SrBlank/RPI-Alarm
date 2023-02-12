@@ -23,7 +23,6 @@
     </script>
   </head>
   <body onload="startTime();">
-
     <div class="clock_container">
       <div id="clock"></div>
     </div>
@@ -136,8 +135,6 @@
             <br><br><br><br><br><br><br><br>
           </ul> -->
         </form>
-        
-
       </div>
     </div>
 
@@ -153,6 +150,11 @@
         <input type="submit" class="buttons" value = "Settings"/>
       </form>-->
     </div>
+
+    <div class="volume_container">
+      <input type="range" min="0" max="100" value="100" class="slider_volume" id="myRange">
+    </div>
+
     <div class="loginPopup">
       <div class="formPopup" id="settingPopupForm">
         <form method="POST" action="/update_settings" class="formContainer">
@@ -208,7 +210,6 @@
         </form>
       </div>
     </div> 
-
     <div class="footer_container">
       <div class="footer_content">
 
@@ -217,6 +218,31 @@
 
     <!--script> src="../static/clock.js" </script>-->
     <script>
+      var slider = document.getElementById("myRange");
+      //var output = document.getElementById("demo");
+      //output.innerHTML = slider.value; // Display the default slider value
+
+      // Update the current slider value (each time you drag the slider handle)
+      slider.oninput = function() {
+        var volume_json = {
+        "volume" :
+          this.value  
+        }
+        fetch("/volume_control", {
+          "method": "POST",
+          "headers": {"Content-Type": "application/json"},
+          "body": JSON.stringify(volume_json),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+
+      //output.innerHTML = this.value;
+      }
       function openFormSettings() {
         document.getElementById("settingPopupForm").style.display = "block";
       }
