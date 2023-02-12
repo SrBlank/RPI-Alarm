@@ -200,6 +200,9 @@ def detect():
     global data
     if request.method == 'POST':
         data = request.get_json()
+        d = datetime.now()
+        rn = d.strftime("%H:%M:%S")
+        data["time"] = rn
         return 'Data received'
     elif request.method == 'GET':
         return data
