@@ -3,7 +3,7 @@
 #define CONNECTION_TIMEOUT 10
 #define SOUND_SPEED 0.034
 #define CM_TO_INCH 0.393701
-#define PROXIMITY 10
+#define PROXIMITY 30 // this is so that it is not constantly sending data
 
 const char* ssid = "**********";
 const char* password = "********";
@@ -14,7 +14,6 @@ const int echoPin = 18;
 
 long duration;
 float distanceInch;
-
 
 void setup() {
   Serial.begin(115200);
@@ -46,7 +45,7 @@ void setupWiFi() {
  * Setup GPIO for HC-SR04 Sensor
  */
 void setupGPIO(){
-   pinMode(trigPin, OUTPUT); 
+  pinMode(trigPin, OUTPUT); 
   pinMode(echoPin, INPUT); 
 }
 
