@@ -40,6 +40,7 @@ loop_counter = 0
 sensor_time_curr = 0
 sensor_time_prev = 0
 
+SENSOR_TIME_THRESHOLD = 10
 PROXIMITY = 20 # inches
 MINUTES_IN_DAY = 1440
 ALARM_PLAYTIME = 5
@@ -65,7 +66,7 @@ def check_distance_data():
     hO, mO, sO = rn.split(":")
     sensor_time_curr = int(hO) * 3600 + int(mO) * 60 + int(sO)
 
-    if sensor_time_curr - sensor_time_prev <= 10: # if the data is less than 2 minutes old
+    if sensor_time_curr - sensor_time_prev <= SENSOR_TIME_THRESHOLD: # if the data is less than 2 minutes old
         return data["distance"]  
     else:
         return 10000          
