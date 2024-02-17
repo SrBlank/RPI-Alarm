@@ -240,5 +240,5 @@ if __name__ == "__main__":
         with open("listfile.data", "wb") as alarms:
             pickle.dump([[], 0], alarms)
 
-    # p = Popen([sys.executable, '-u', './alarm.py'], stdout = PIPE, stderr=STDOUT, bufsize=1)
+    #p = Popen([sys.executable, '-u', './alarm.py'], stdout = PIPE, stderr=STDOUT, bufsize=1)
     app.run(host="0.0.0.0")

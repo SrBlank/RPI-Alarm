@@ -82,6 +82,7 @@ def interrupt_handler_keyboard(channel=None):
 
 def interrupt_handler_GPIO(channel=None):
     pygame.mixer.music.stop()
+    print("pressed")
     logger.critical("Interrupt Detected - Alarm Stopped - Interrupt Type - GPIO")
 
 
