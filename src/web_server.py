@@ -207,6 +207,18 @@ def detect():
     elif request.method == 'GET':
         return data
 
+#
+# Function will recieve data from volume slider
+#
+@app.route("/volume_control", methods=["GET", "POST"])
+def volume_control():
+    global volume
+    if request.method == "POST":
+        volume = request.get_json()
+        return "Data Received"
+    elif request.method == "GET":
+        return volume
+        
 """
 OTHER FUNCTIONS
 """
