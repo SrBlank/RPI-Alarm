@@ -1,4 +1,6 @@
 # RPI-Alarm
+**June 2024 Update:** This project will soon be deprecated be replaced by Aegis 
+
 **2024 Update:** I will be updating this project throughout this semester with hopefully the goal of at least one commit a day. I will be updating this project as part of learning better web development practices as part of my internet software development course.
 
 This Flask web application is designed to run on your local network and provides a convenient solution for setting alarms. The application utilizes a dedicated computer connected to speakers, allowing you to set alarms from any device. The timer, button, or sensor can be used to turn off the alarm.
